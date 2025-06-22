@@ -32,13 +32,13 @@ surface_material_override/0 = SubResource("StandardMaterial3D_nnsk1")
 
 [node name="player" parent="." instance=ExtResource("1_nnsk1")]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.863597, -0.0851732, -0.496936, 0.500908, 0.032798, 0.864879, -0.057366, -0.995826, 0.0709882, 0, 2.78665, 0)
-shadow_enabled = true
-directional_shadow_max_distance = 500.0
-
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" type="Camera3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 0.902555, 0.430574, 0, -0.430574, 0.902555, 0, 120.123, 200.292)
 environment = SubResource("Environment_k0juu")
 current = true
 fov = 80.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.863597, -0.0851732, -0.496936, 0.500908, 0.032798, 0.864879, -0.057366, -0.995826, 0.0709882, 0, 2.78665, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 500.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dl8sae6e1wjis"]
+[gd_scene load_steps=9 format=3 uid="uid://dl8sae6e1wjis"]
 
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
 
@@ -6,20 +6,51 @@
 size = Vector3(1, 0.415, 4.504)
 
 [sub_resource type="BoxMesh" id="BoxMesh_3vyb7"]
-size = Vector3(1, 0.415, 4.504)
+size = Vector3(28, 8, 240)
 
 [sub_resource type="BoxMesh" id="BoxMesh_g2els"]
-size = Vector3(0.855, 0.72, 1.595)
+size = Vector3(18, 5, 60)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qhqgy"]
+size = Vector3(18, 5, 60)
+
+[sub_resource type="BoxMesh" id="BoxMesh_dqkch"]
+size = Vector3(18, 5, 33.35)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qlg0r"]
+size = Vector3(18, 20, 30)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tuyoq"]
+size = Vector3(5, 50, 5)
 
 [node name="player" type="CharacterBody3D"]
 script = ExtResource("1_3vyb7")
+speed_forward_max = 16.0
+speed_reverse_max = 5.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_u8vuu")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
 mesh = SubResource("BoxMesh_3vyb7")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.405573, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.4003, 0)
 mesh = SubResource("BoxMesh_g2els")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.4003, 76.3508)
+mesh = SubResource("BoxMesh_qhqgy")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.4003, -70.6084)
+mesh = SubResource("BoxMesh_dqkch")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15.7693, 7.91709)
+mesh = SubResource("BoxMesh_qlg0r")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8147e-06, 37.2532, 3.1108)
+mesh = SubResource("BoxMesh_tuyoq")

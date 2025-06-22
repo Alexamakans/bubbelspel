@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u8vuu"]
-size = Vector3(4.504, 0.415, 1)
+size = Vector3(1, 0.415, 4.504)
 
 [sub_resource type="BoxMesh" id="BoxMesh_3vyb7"]
 
@@ -16,9 +16,9 @@ script = ExtResource("1_3vyb7")
 shape = SubResource("BoxShape3D_u8vuu")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(4.50423, 0, 0, 0, 0.41517, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(-1.96886e-07, 0, -1, 0, 0.41517, 0, 4.50423, 0, -4.37114e-08, 0, 0, 0)
 mesh = SubResource("BoxMesh_3vyb7")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1.47487, 0, 0, 0, 0.753592, 0, 0, 0, 0.683739, 0, 0.405573, 0)
+transform = Transform3D(-6.44686e-08, 0, -0.683739, 0, 0.753592, 0, 1.47487, 0, -2.98872e-08, 0, 0.405573, 0)
 mesh = SubResource("BoxMesh_g2els")

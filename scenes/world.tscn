@@ -11,3 +11,9 @@ transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
 mesh = SubResource("PlaneMesh_rwgxs")
 
 [node name="player" parent="." instance=ExtResource("1_nnsk1")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.863597, -0.0851732, -0.496936, 0.500908, 0.032798, 0.864879, -0.057366, -0.995826, 0.0709882, 0, 2.78665, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.902555, 0.430574, 0, -0.430574, 0.902555, 0, 3.77819, 5.43522)

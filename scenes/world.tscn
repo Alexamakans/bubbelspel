@@ -1,3 +1,13 @@
-[gd_scene format=3 uid="uid://ck4sm14vsee4w"]
+[gd_scene load_steps=3 format=3 uid="uid://ck4sm14vsee4w"]
+
+[ext_resource type="PackedScene" uid="uid://dl8sae6e1wjis" path="res://scenes/player.tscn" id="1_nnsk1"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_rwgxs"]
 
 [node name="Node3D" type="Node3D"]
+
+[node name="water" type="MeshInstance3D" parent="."]
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
+mesh = SubResource("PlaneMesh_rwgxs")
+
+[node name="player" parent="." instance=ExtResource("1_nnsk1")]

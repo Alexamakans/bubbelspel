@@ -6,8 +6,10 @@
 size = Vector3(1, 0.415, 4.504)
 
 [sub_resource type="BoxMesh" id="BoxMesh_3vyb7"]
+size = Vector3(1, 0.415, 4.504)
 
 [sub_resource type="BoxMesh" id="BoxMesh_g2els"]
+size = Vector3(0.855, 0.72, 1.595)
 
 [node name="player" type="CharacterBody3D"]
 script = ExtResource("1_3vyb7")
@@ -16,9 +18,8 @@ script = ExtResource("1_3vyb7")
 shape = SubResource("BoxShape3D_u8vuu")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(-1.96886e-07, 0, -1, 0, 0.41517, 0, 4.50423, 0, -4.37114e-08, 0, 0, 0)
 mesh = SubResource("BoxMesh_3vyb7")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(-6.44686e-08, 0, -0.683739, 0, 0.753592, 0, 1.47487, 0, -2.98872e-08, 0, 0.405573, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.405573, 0)
 mesh = SubResource("BoxMesh_g2els")

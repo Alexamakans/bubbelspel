@@ -1,12 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://ck4sm14vsee4w"]
+[gd_scene load_steps=9 format=3 uid="uid://ck4sm14vsee4w"]
 
+[ext_resource type="Texture2D" uid="uid://b0eiju83ccwf1" path="res://textures/water 0342.jpg" id="1_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://dl8sae6e1wjis" path="res://scenes/player.tscn" id="1_nnsk1"]
+[ext_resource type="Texture2D" uid="uid://diq0waqqm1hns" path="res://textures/water 0342normal.jpg" id="2_k0juu"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_rwgxs"]
 size = Vector2(2000, 2000)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nnsk1"]
 albedo_color = Color(0.000148483, 0.206206, 0.661461, 1)
+albedo_texture = ExtResource("1_4wyf3")
+normal_enabled = true
+normal_scale = 6.63
+normal_texture = ExtResource("2_k0juu")
+uv1_scale = Vector3(50, 50, 50)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rwgxs"]
 

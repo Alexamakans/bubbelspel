@@ -27,6 +27,9 @@ size = Vector3(5, 50, 5)
 script = ExtResource("1_3vyb7")
 speed_forward_max = 16.0
 speed_reverse_max = 5.0
+speed_acceleration = 10.0
+rot_angle_max = 15.0
+rot_acceleration = 1.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_u8vuu")

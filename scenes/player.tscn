@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dl8sae6e1wjis"]
+[gd_scene load_steps=13 format=3 uid="uid://dl8sae6e1wjis"]
 
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
 
@@ -23,13 +23,30 @@ size = Vector3(18, 20, 30)
 [sub_resource type="BoxMesh" id="BoxMesh_tuyoq"]
 size = Vector3(5, 50, 5)
 
-[node name="player" type="CharacterBody3D"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3vyb7"]
+bg_color = Color(0.274665, 0.521662, 0.279309, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g2els"]
+bg_color = Color(0.681279, 0, 0.219271, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qhqgy"]
+bg_color = Color(0.46, 0.46, 0.46, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dqkch"]
+bg_color = Color(0.46, 0.46, 0.46, 1)
+
+[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("speed_forward_bar", "speed_reverse_bar", "rot_starboard_bar", "rot_portside_bar")]
 script = ExtResource("1_3vyb7")
-speed_forward_max = 16.0
-speed_reverse_max = 5.0
-speed_acceleration = 10.0
+speed_forward_max = 32.0
+speed_reverse_max = 16.0
+speed_acceleration = 6.0
 rot_angle_max = 15.0
-rot_acceleration = 1.5
+rot_acceleration = 40.0
+speed_forward_bar = NodePath("ProgressBarForward")
+speed_reverse_bar = NodePath("ProgressBarReverse")
+rot_starboard_bar = NodePath("ProgressBarStarboard")
+rot_portside_bar = NodePath("ProgressBarPortside")
+metadata/_edit_vertical_guides_ = [576.0]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_u8vuu")
@@ -57,3 +74,74 @@ mesh = SubResource("BoxMesh_qlg0r")
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8147e-06, 37.2532, 3.1108)
 mesh = SubResource("BoxMesh_tuyoq")
+
+[node name="ProgressBarForward" type="ProgressBar" parent="."]
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -54.0
+offset_top = 25.0
+offset_right = -22.0
+offset_bottom = -161.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_3vyb7")
+max_value = 1.0
+step = 0.001
+value = 0.1
+fill_mode = 3
+show_percentage = false
+
+[node name="ProgressBarReverse" type="ProgressBar" parent="."]
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -54.0
+offset_top = 487.0
+offset_right = -22.0
+offset_bottom = -28.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_g2els")
+max_value = 1.0
+step = 0.001
+value = 0.1
+fill_mode = 2
+show_percentage = false
+
+[node name="ProgressBarStarboard" type="ProgressBar" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 574.0
+offset_top = -46.0
+offset_right = -358.0
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/fill = SubResource("StyleBoxFlat_qhqgy")
+max_value = 1.0
+step = 0.001
+value = 0.1
+show_percentage = false
+
+[node name="ProgressBarPortside" type="ProgressBar" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 358.0
+offset_top = -46.0
+offset_right = -574.0
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/fill = SubResource("StyleBoxFlat_dqkch")
+max_value = 1.0
+step = 0.001
+value = 0.1
+fill_mode = 1
+show_percentage = false

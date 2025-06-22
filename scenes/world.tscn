@@ -1,19 +1,26 @@
-[gd_scene load_steps=9 format=3 uid="uid://ck4sm14vsee4w"]
+[gd_scene load_steps=8 format=3 uid="uid://ck4sm14vsee4w"]
 
-[ext_resource type="Texture2D" uid="uid://b0eiju83ccwf1" path="res://textures/water 0342.jpg" id="1_4wyf3"]
+[ext_resource type="Shader" uid="uid://c3kjd10ln4c6b" path="res://scenes/world.gdshader" id="1_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://dl8sae6e1wjis" path="res://scenes/player.tscn" id="1_nnsk1"]
-[ext_resource type="Texture2D" uid="uid://diq0waqqm1hns" path="res://textures/water 0342normal.jpg" id="2_k0juu"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_rwgxs"]
 size = Vector2(2000, 2000)
+subdivide_width = 512
+subdivide_depth = 512
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nnsk1"]
-albedo_color = Color(0.000148483, 0.206206, 0.661461, 1)
-albedo_texture = ExtResource("1_4wyf3")
-normal_enabled = true
-normal_scale = 6.63
-normal_texture = ExtResource("2_k0juu")
-uv1_scale = Vector3(50, 50, 50)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k0juu"]
+render_priority = 0
+shader = ExtResource("1_4wyf3")
+shader_parameter/time_speed = 1.0
+shader_parameter/wave_speed = 1.0
+shader_parameter/wave_amplitude = 21.236
+shader_parameter/wave_frequency = 10.0
+shader_parameter/noise_scale = 2.0
+shader_parameter/shallow_color = Color(0, 0.6, 0.8, 1)
+shader_parameter/deep_color = Color(0, 0.1, 0.4, 1)
+shader_parameter/foam_color = Color(0.8, 0.9, 1, 1)
+shader_parameter/foam_threshold = 0.9
+shader_parameter/foam_blend = 0.1
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rwgxs"]
 
@@ -28,7 +35,7 @@ sky = SubResource("Sky_4wyf3")
 
 [node name="water" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_rwgxs")
-surface_material_override/0 = SubResource("StandardMaterial3D_nnsk1")
+surface_material_override/0 = SubResource("ShaderMaterial_k0juu")
 
 [node name="player" parent="." instance=ExtResource("1_nnsk1")]
 

@@ -1,6 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://qxcfgdwahrga"]
+[gd_scene load_steps=16 format=3 uid="uid://di1g4xerhnl1c"]
 
 [ext_resource type="Shader" uid="uid://c3kjd10ln4c6b" path="res://scenes/world.gdshader" id="1_vjb58"]
+[ext_resource type="Script" uid="uid://devemhu1swx16" path="res://lobby.gd" id="2_vjb58"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_mhnvy"]
 size = Vector2(2000, 2000)
@@ -117,24 +118,202 @@ environment = SubResource("Environment_g2els")
 current = true
 fov = 80.0
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="Menu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_vjb58")
+
+[node name="MainMenu" type="PanelContainer" parent="Menu"]
 offset_left = 515.0
 offset_top = 173.0
 offset_right = 765.0
-offset_bottom = 273.0
+offset_bottom = 304.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+[node name="VBox" type="VBoxContainer" parent="Menu/MainMenu"]
 layout_mode = 2
 size_flags_horizontal = 4
-alignment = 1
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="Menu/MainMenu/VBox"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "bubbelspel"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer"]
+[node name="HostGame" type="Button" parent="Menu/MainMenu/VBox"]
 layout_mode = 2
-text = " Play game, liksom "
+text = " Host game "
+
+[node name="JoinGame" type="Button" parent="Menu/MainMenu/VBox"]
+layout_mode = 2
+text = " Join game "
+
+[node name="HostGame" type="PanelContainer" parent="Menu"]
+visible = false
+offset_left = 515.0
+offset_top = 173.0
+offset_right = 765.0
+offset_bottom = 446.0
+
+[node name="Control" type="Control" parent="Menu/HostGame"]
+layout_mode = 2
+
+[node name="Back" type="Button" parent="Menu/HostGame/Control"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 53.0
+offset_bottom = 39.0
+text = "Back"
+
+[node name="VBox" type="VBoxContainer" parent="Menu/HostGame"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Title" type="Label" parent="Menu/HostGame/VBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Host game"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerNameLabel" type="Label" parent="Menu/HostGame/VBox"]
+layout_mode = 2
+text = "Player name:"
+
+[node name="PlayerName" type="TextEdit" parent="Menu/HostGame/VBox"]
+custom_minimum_size = Vector2(150, 36)
+layout_mode = 2
+placeholder_text = "Enter here"
+emoji_menu_enabled = false
+
+[node name="PortLabel" type="Label" parent="Menu/HostGame/VBox"]
+layout_mode = 2
+text = "Port:"
+
+[node name="Port" type="TextEdit" parent="Menu/HostGame/VBox"]
+custom_minimum_size = Vector2(150, 36)
+layout_mode = 2
+text = "9752"
+placeholder_text = "Enter here"
+emoji_menu_enabled = false
+
+[node name="Separator" type="Control" parent="Menu/HostGame/VBox"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Host" type="Button" parent="Menu/HostGame/VBox"]
+layout_mode = 2
+disabled = true
+text = "Host"
+
+[node name="ErrorLabel" type="Label" parent="Menu/HostGame/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+
+[node name="JoinGame" type="PanelContainer" parent="Menu"]
+visible = false
+offset_left = 515.0
+offset_top = 173.0
+offset_right = 765.0
+offset_bottom = 446.0
+
+[node name="Control" type="Control" parent="Menu/JoinGame"]
+layout_mode = 2
+
+[node name="Back" type="Button" parent="Menu/JoinGame/Control"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 53.0
+offset_bottom = 39.0
+text = "Back"
+
+[node name="VBox" type="VBoxContainer" parent="Menu/JoinGame"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Title" type="Label" parent="Menu/JoinGame/VBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Join game"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerNameLabel" type="Label" parent="Menu/JoinGame/VBox"]
+layout_mode = 2
+text = "Player name:"
+
+[node name="PlayerName" type="TextEdit" parent="Menu/JoinGame/VBox"]
+custom_minimum_size = Vector2(150, 36)
+layout_mode = 2
+placeholder_text = "Enter here"
+emoji_menu_enabled = false
+
+[node name="AddressLabel" type="Label" parent="Menu/JoinGame/VBox"]
+layout_mode = 2
+text = "Port:"
+
+[node name="Address" type="TextEdit" parent="Menu/JoinGame/VBox"]
+custom_minimum_size = Vector2(150, 36)
+layout_mode = 2
+text = "127.0.0.1:9752"
+placeholder_text = "Enter here"
+emoji_menu_enabled = false
+
+[node name="Separator" type="Control" parent="Menu/JoinGame/VBox"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Join" type="Button" parent="Menu/JoinGame/VBox"]
+layout_mode = 2
+disabled = true
+text = "Join"
+
+[node name="ErrorLabel" type="Label" parent="Menu/JoinGame/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+
+[node name="Lobby" type="PanelContainer" parent="Menu"]
+visible = false
+offset_left = 515.0
+offset_top = 173.0
+offset_right = 765.0
+offset_bottom = 446.0
+
+[node name="Control" type="Control" parent="Menu/Lobby"]
+layout_mode = 2
+
+[node name="Leave" type="Button" parent="Menu/Lobby/Control"]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 53.0
+offset_bottom = 39.0
+text = "Leave"
+
+[node name="VBox" type="VBoxContainer" parent="Menu/Lobby"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Title" type="Label" parent="Menu/Lobby/VBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Lobby"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerNameLabel" type="Label" parent="Menu/Lobby/VBox"]
+layout_mode = 2
+text = "TODO: add player list"
+
+[node name="ErrorDialog" type="AcceptDialog" parent="Menu"]
+initial_position = 1
+
+[connection signal="pressed" from="Menu/MainMenu/VBox/HostGame" to="Menu" method="set_view" binds= ["HostGame"]]
+[connection signal="pressed" from="Menu/MainMenu/VBox/JoinGame" to="Menu" method="set_view" binds= ["JoinGame"]]
+[connection signal="pressed" from="Menu/HostGame/Control/Back" to="Menu" method="set_view" binds= ["MainMenu"]]
+[connection signal="pressed" from="Menu/HostGame/VBox/Host" to="Menu" method="_on_host_pressed"]
+[connection signal="pressed" from="Menu/JoinGame/Control/Back" to="Menu" method="set_view" binds= ["MainMenu"]]
+[connection signal="pressed" from="Menu/JoinGame/VBox/Join" to="Menu" method="_on_join_pressed"]
+[connection signal="pressed" from="Menu/Lobby/Control/Leave" to="Menu" method="_on_lobby_leave_pressed"]

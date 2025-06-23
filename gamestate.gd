@@ -72,7 +72,7 @@ func register_player(new_player_name: String) -> void:
 	player_list_changed.emit()
 
 
-func unregister_player(id) -> void:
+func unregister_player(id: int) -> void:
 	players.erase(id)
 	player_list_changed.emit()
 
@@ -80,9 +80,10 @@ func unregister_player(id) -> void:
 @rpc("call_local")
 func load_world() -> void:
 	# Change scene.
-	var world = load("res://scenes/world.tscn").instantiate()
+	var world: Node = load("res://scenes/world.tscn").instantiate()
 	get_tree().get_root().add_child(world)
-	get_tree().get_root().get_node("Lobby").hide()
+	var lobby: Lobby = get_tree().get_root().get_node("Lobby")
+	lobby.set_view(Lobby.VIEW_NONE)
 
 	# Set up score.
 	world.get_node("Score").add_player(multiplayer.get_unique_id(), player_name)
@@ -91,14 +92,14 @@ func load_world() -> void:
 	get_tree().set_pause(false) # Unpause and unleash the game!
 
 
-func host_game(new_player_name) -> void:
+func host_game(new_player_name: String) -> void:
 	player_name = new_player_name
 	peer = ENetMultiplayerPeer.new()
 	peer.create_server(DEFAULT_PORT, MAX_PEERS)
 	multiplayer.set_multiplayer_peer(peer)
 
 
-func join_game(ip, new_player_name) -> void:
+func join_game(ip: String, new_player_name: String) -> void:
 	player_name = new_player_name
 	peer = ENetMultiplayerPeer.new()
 	peer.create_client(ip, DEFAULT_PORT)

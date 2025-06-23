@@ -35,7 +35,7 @@ shader_parameter/_DepthFactor = 1.0
 shader_parameter/sunDirection = Vector3(0, -1, -0.5)
 shader_parameter/sunColor = Vector3(1, 0.95, 0.9)
 
-[node name="Node3D" type="Node3D"]
+[node name="World" type="Node3D"]
 
 [node name="water" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_rwgxs")

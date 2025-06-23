@@ -253,13 +253,25 @@ emoji_menu_enabled = false
 
 [node name="AddressLabel" type="Label" parent="Menu/JoinGame/VBox"]
 layout_mode = 2
-text = "Port:"
+text = "Address:"
 
-[node name="Address" type="TextEdit" parent="Menu/JoinGame/VBox"]
-custom_minimum_size = Vector2(150, 36)
+[node name="Address" type="HBoxContainer" parent="Menu/JoinGame/VBox"]
 layout_mode = 2
-text = "127.0.0.1:9752"
-placeholder_text = "Enter here"
+
+[node name="IP" type="TextEdit" parent="Menu/JoinGame/VBox/Address"]
+custom_minimum_size = Vector2(100, 36)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "127.0.0.1"
+placeholder_text = "e.g 127.0.0.1"
+emoji_menu_enabled = false
+
+[node name="Port" type="TextEdit" parent="Menu/JoinGame/VBox/Address"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "9752"
+placeholder_text = "e.g 9752"
 emoji_menu_enabled = false
 
 [node name="Separator" type="Control" parent="Menu/JoinGame/VBox"]

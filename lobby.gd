@@ -18,12 +18,15 @@ var current_view: String = VIEW_MAIN_MENU
 @onready var host_game_port: TextEdit = $HostGame/VBox/Port
 @onready var host_game_error_label: Label = $HostGame/VBox/ErrorLabel
 @onready var host_game_button: Button = $HostGame/VBox/Host
+@onready var host_game_back: Button = $HostGame/Control/Back
 
 @onready var join_game_control: Control = $JoinGame
 @onready var join_game_player_name: TextEdit = $JoinGame/VBox/PlayerName
-@onready var join_game_address: TextEdit = $JoinGame/VBox/Address
+@onready var join_game_ip: TextEdit = $JoinGame/VBox/Address/IP
+@onready var join_game_port: TextEdit = $JoinGame/VBox/Address/Port
 @onready var join_game_error_label: Label = $JoinGame/VBox/ErrorLabel
 @onready var join_game_button: Button = $JoinGame/VBox/Join
+@onready var join_game_back: Button = $JoinGame/Control/Back
 
 @onready var lobby_control: Control = $Lobby
 
@@ -74,6 +77,7 @@ func _on_host_pressed():
 	refresh_lobby()
 
 func set_host_game_interactible(interactible: bool) -> void:
+	host_game_back.disabled = not interactible
 	host_game_button.disabled = not interactible
 	host_game_player_name.editable = interactible
 	host_game_port.editable = interactible
@@ -84,26 +88,33 @@ func set_host_game_error(error: String) -> void:
 
 
 func _on_join_pressed():
-	var player_name = join_game_player_name.text.strip_edges().strip_escapes()
+	var player_name: String = join_game_player_name.text.strip_edges().strip_escapes()
 	if player_name == "":
 		set_join_game_error("Invalid name!")
 		return
 
-	var ip = join_game_address.text.strip_edges()
+	var ip: String = join_game_ip.text.strip_edges()
 	if not ip.is_valid_ip_address():
 		set_join_game_error("Invalid IP address!")
+		return
+
+	var port: String = join_game_port.text.strip_edges()
+	if not port.is_valid_int():
+		set_join_game_error("Invalid address port!")
 		return
 
 	set_join_game_error("")
 	set_join_game_interactible(false)
 
-	gamestate.join_game(ip, player_name)
+	gamestate.join_game(ip, port.to_int(), player_name)
 
 
 func set_join_game_interactible(interactible: bool) -> void:
+	join_game_back.disabled = not interactible
 	join_game_button.disabled = not interactible
 	join_game_player_name.editable = interactible
-	join_game_address.editable = interactible
+	join_game_ip.editable = interactible
+	join_game_port.editable = interactible
 
 
 func set_join_game_error(error: String) -> void:

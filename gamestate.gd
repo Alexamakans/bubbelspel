@@ -60,7 +60,6 @@ func _server_disconnected() -> void:
 
 # Callback from SceneTree, only for clients (not server).
 func _connected_fail() -> void:
-	multiplayer.set_network_peer(null) # Remove peer
 	connection_failed.emit()
 
 
@@ -99,10 +98,10 @@ func host_game(new_player_name: String) -> void:
 	multiplayer.set_multiplayer_peer(peer)
 
 
-func join_game(ip: String, new_player_name: String) -> void:
+func join_game(ip: String, port: int, new_player_name: String) -> void:
 	player_name = new_player_name
 	peer = ENetMultiplayerPeer.new()
-	peer.create_client(ip, DEFAULT_PORT)
+	peer.create_client(ip, port)
 	multiplayer.set_multiplayer_peer(peer)
 
 

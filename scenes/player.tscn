@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dl8sae6e1wjis"]
+[gd_scene load_steps=29 format=3 uid="uid://dl8sae6e1wjis"]
 
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://ctxyiw2s17xid" path="res://scenes/player_camera.gd" id="2_g2els"]
@@ -54,6 +54,53 @@ sky = SubResource("Sky_4wyf3")
 [sub_resource type="Curve" id="Curve_g2els"]
 _data = [Vector2(0, 0), 0.0, 0.487478, 0, 0, Vector2(0.501799, 0.885445), 1.19983, 1.19983, 0, 0, Vector2(1, 1), -0.436029, 0.0, 0, 0]
 point_count = 3
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_g2els"]
+frequency = 0.0127
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qhqgy"]
+noise = SubResource("FastNoiseLite_g2els")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dqkch"]
+blend_mode = 1
+albedo_color = Color(1, 1, 1, 0.501961)
+albedo_texture = SubResource("NoiseTexture2D_qhqgy")
+
+[sub_resource type="Curve" id="Curve_qhqgy"]
+_data = [Vector2(0, 0), 0.0, 7.71915, 0, 0, Vector2(0.0857143, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.519851, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_dqkch"]
+curve = SubResource("Curve_qhqgy")
+
+[sub_resource type="Curve" id="Curve_qlg0r"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_tuyoq"]
+curve = SubResource("Curve_qlg0r")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g2els"]
+emission_shape_scale = Vector3(1, 0, 1)
+emission_shape = 1
+emission_sphere_radius = 12.17
+initial_velocity_min = 1.0
+initial_velocity_max = 4.0
+gravity = Vector3(0, 0, 0)
+scale_max = 4.0
+scale_curve = SubResource("CurveTexture_dqkch")
+turbulence_enabled = true
+turbulence_noise_strength = 5.45
+turbulence_noise_speed = Vector3(4, 0, 4)
+turbulence_noise_speed_random = 1.83
+turbulence_influence_min = 0.195
+turbulence_influence_max = 0.302
+turbulence_influence_over_life = SubResource("CurveTexture_tuyoq")
+
+[sub_resource type="SphereMesh" id="SphereMesh_fjrip"]
+radius = 2.5
+rings = 5
+is_hemisphere = true
 
 [node name="player" type="CharacterBody3D" node_paths=PackedStringArray("speed_forward_bar", "speed_reverse_bar", "rot_starboard_bar", "rot_portside_bar")]
 script = ExtResource("1_3vyb7")
@@ -188,3 +235,13 @@ x_look_curve = SubResource("Curve_g2els")
 [node name="CameraFocusPoint" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 27.446, 0)
 gizmo_extents = 5.0
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 100.017)
+material_override = SubResource("StandardMaterial3D_dqkch")
+amount = 50
+lifetime = 5.0
+explosiveness = 0.03
+randomness = 0.35
+process_material = SubResource("ParticleProcessMaterial_g2els")
+draw_pass_1 = SubResource("SphereMesh_fjrip")

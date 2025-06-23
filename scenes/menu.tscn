@@ -315,9 +315,30 @@ text = "Lobby"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerNameLabel" type="Label" parent="Menu/Lobby/VBox"]
+[node name="PlayerListLabel" type="Label" parent="Menu/Lobby/VBox"]
 layout_mode = 2
-text = "TODO: add player list"
+text = "Players"
+
+[node name="PlayerList" type="ItemList" parent="Menu/Lobby/VBox"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+allow_search = false
+item_count = 1
+item_0/text = "hejhej"
+
+[node name="Start" type="Button" parent="Menu/Lobby/VBox"]
+layout_mode = 2
+text = "Start game"
+
+[node name="WaitingLabel" type="Label" parent="Menu/Lobby/VBox"]
+layout_mode = 2
+text = "Waiting for server to start"
+
+[node name="Separator" type="Control" parent="Menu/Lobby/VBox"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
 
 [node name="ErrorDialog" type="AcceptDialog" parent="Menu"]
 initial_position = 1
@@ -329,3 +350,4 @@ initial_position = 1
 [connection signal="pressed" from="Menu/JoinGame/Control/Back" to="Menu" method="set_view" binds= ["MainMenu"]]
 [connection signal="pressed" from="Menu/JoinGame/VBox/Join" to="Menu" method="_on_join_pressed"]
 [connection signal="pressed" from="Menu/Lobby/Control/Leave" to="Menu" method="_on_lobby_leave_pressed"]
+[connection signal="pressed" from="Menu/Lobby/VBox/Start" to="Menu" method="_on_start_pressed"]

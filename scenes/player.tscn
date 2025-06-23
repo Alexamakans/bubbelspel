@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dl8sae6e1wjis"]
+[gd_scene load_steps=30 format=3 uid="uid://dl8sae6e1wjis"]
 
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://ctxyiw2s17xid" path="res://scenes/player_camera.gd" id="2_g2els"]
@@ -101,6 +101,8 @@ turbulence_influence_over_life = SubResource("CurveTexture_tuyoq")
 radius = 2.5
 rings = 5
 is_hemisphere = true
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_g2els"]
 
 [node name="player" type="CharacterBody3D" node_paths=PackedStringArray("speed_forward_bar", "speed_reverse_bar", "rot_starboard_bar", "rot_portside_bar")]
 script = ExtResource("1_3vyb7")
@@ -245,3 +247,6 @@ explosiveness = 0.03
 randomness = 0.35
 process_material = SubResource("ParticleProcessMaterial_g2els")
 draw_pass_1 = SubResource("SphereMesh_fjrip")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_g2els")

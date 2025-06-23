@@ -29,9 +29,12 @@ var current_view: String = VIEW_MAIN_MENU
 @onready var join_game_back: Button = $JoinGame/Control/Back
 
 @onready var lobby_control: Control = $Lobby
+@onready var lobby_player_list: ItemList = $Lobby/VBox/PlayerList
+@onready var lobby_start_button: Button = $Lobby/VBox/Start
+@onready var lobby_waiting_label: Label = $Lobby/VBox/WaitingLabel
 
 func set_view(view: String) -> void:
-	visible = view != VIEW_NONE
+	get_parent().visible = view != VIEW_NONE
 	main_menu_control.visible = view == VIEW_MAIN_MENU
 	host_game_control.visible = view == VIEW_HOST_GAME
 	if view == VIEW_HOST_GAME:
@@ -66,14 +69,18 @@ func set_default_player_name(playerName: String) -> void:
 
 
 func _on_host_pressed():
-	if host_game_player_name.text == "":
-		host_game_error_label.text = "Invalid name!"
+	var player_name = host_game_player_name.text.strip_edges().strip_escapes()
+	if player_name == "":
+		set_host_game_error("Invalid name")
+		return
+	var port: String = host_game_port.text.strip_edges()
+	if port == "":
+		set_host_game_error("Invalid port")
 		return
 
 	set_view(VIEW_LOBBY)
 
-	var player_name = host_game_player_name.text
-	gamestate.host_game(player_name)
+	gamestate.host_game(player_name, port.to_int())
 	refresh_lobby()
 
 func set_host_game_interactible(interactible: bool) -> void:
@@ -141,15 +148,16 @@ func _on_game_error(error: String):
 
 
 func refresh_lobby():
-	assert(false, "TODO")
-	var players = gamestate.get_player_list()
+	var players: Array[String] = gamestate.get_player_list()
 	players.sort()
-	$Players/List.clear()
-	$Players/List.add_item(gamestate.get_player_name() + " (You)")
+	lobby_player_list.clear()
+	lobby_player_list.add_item(gamestate.get_player_name() + " (You)")
 	for p in players:
-		$Players/List.add_item(p)
+		lobby_player_list.add_item(p)
 
-	$Players/Start.disabled = not multiplayer.is_server()
+	var is_server: bool = multiplayer.is_server()
+	lobby_waiting_label.visible = not is_server
+	lobby_start_button.visible = is_server
 
 
 func _on_lobby_leave_pressed() -> void:

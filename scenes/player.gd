@@ -19,8 +19,8 @@ var rot_current: float = 0
 @export var rot_portside_bar: ProgressBar
 
 func _process(delta: float) -> void:
-	var input_forward = Input.get_action_strength("move_forward") * delta * speed_acceleration
-	var input_backward = Input.get_action_strength("move_backward") * delta * speed_acceleration
+	var input_forward: float = Input.get_action_strength("move_forward") * delta * speed_acceleration
+	var input_backward: float = Input.get_action_strength("move_backward") * delta * speed_acceleration
 
 	if input_forward > 0:
 		speed_current = min(speed_forward_max, speed_current + input_forward)
@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 	speed_forward_bar.value = maxf(0, speed_current / speed_forward_max)
 	speed_reverse_bar.value = maxf(0, -speed_current / speed_reverse_max)
 
-	var input_rot = Input.get_axis("move_starboard", "move_portside") * delta * rot_acceleration
+	var input_rot: float = Input.get_axis("move_starboard", "move_portside") * delta * rot_acceleration
 	rot_current = clampf(rot_current + input_rot, -rot_angle_max, rot_angle_max)
 
 	rot_portside_bar.value = maxf(0, rot_current / rot_angle_max)
@@ -40,15 +40,15 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	position += -global_transform.basis.z * speed_current * delta
-	var rot_delta = rot_current * delta
+	var rot_delta: float = rot_current * delta
 
-	var speed_factor = 1
+	var speed_factor: float = 1
 	if speed_current > 0:
 		speed_factor = 1 - speed_current / speed_forward_max
 	else:
 		speed_factor = 1 - speed_current / speed_reverse_max
 
-	var rot_influenced = lerpf(rot_delta, 0, speed_factor)
+	var rot_influenced: float = lerpf(rot_delta, 0, speed_factor)
 	rotation.y += deg_to_rad(rot_influenced)
 
 	move_and_slide()

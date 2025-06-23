@@ -13,10 +13,10 @@ var distance_current: float
 var y_rad_current: float # aka yaw
 
 func _ready() -> void:
-	var vector = focus_point.global_position - global_position
+	var vector: Vector3 = focus_point.global_position - global_position
 	distance_current = vector.length()
 
-	var camera_forward = -global_basis.z
+	var camera_forward: Vector3 = -global_basis.z
 	y_rad_current = atan2(camera_forward.z, camera_forward.x)
 
 func _process(delta: float) -> void:

@@ -15,6 +15,10 @@ run/main_scene="uid://ck4sm14vsee4w"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+gamestate="*res://gamestate.gd"
+
 [input]
 
 move_forward={

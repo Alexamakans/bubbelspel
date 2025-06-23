@@ -14,30 +14,29 @@ const DEFAULT_PORT = 10567
 # Max number of players.
 const MAX_PEERS = 12
 
-var peer = null
+var peer: ENetMultiplayerPeer = null
 
 # Name for my player.
-var player_name = "unnamed"
+var player_name: String = "unnamed"
 
 # Names for remote players in id:name format.
-var players = {}
-var players_ready = []
+var players: Dictionary[int, String] = {}
 
 # Signals to let lobby GUI know what's going on.
 signal player_list_changed()
 signal connection_failed()
 signal connection_succeeded()
 signal game_ended()
-signal game_error(what)
+signal game_error(what: String)
 
 # Callback from SceneTree.
-func _player_connected(id):
+func _player_connected(id: int) -> void:
 	# Registration of a client beings here, tell the connected player that we are here.
 	register_player.rpc_id(id, player_name)
 
 
 # Callback from SceneTree.
-func _player_disconnected(id):
+func _player_disconnected(id: int) -> void:
 	if has_node("/root/World"): # Game is in progress.
 		if multiplayer.is_server():
 			game_error.emit("Player " + players[id] + " disconnected")
@@ -48,38 +47,38 @@ func _player_disconnected(id):
 
 
 # Callback from SceneTree, only for clients (not server).
-func _connected_ok():
+func _connected_ok() -> void:
 	# We just connected to a server
 	connection_succeeded.emit()
 
 
 # Callback from SceneTree, only for clients (not server).
-func _server_disconnected():
+func _server_disconnected() -> void:
 	game_error.emit("Server disconnected")
 	end_game()
 
 
 # Callback from SceneTree, only for clients (not server).
-func _connected_fail():
+func _connected_fail() -> void:
 	multiplayer.set_network_peer(null) # Remove peer
 	connection_failed.emit()
 
 
 # Lobby management functions.
 @rpc("any_peer")
-func register_player(new_player_name):
-	var id = multiplayer.get_remote_sender_id()
+func register_player(new_player_name: String) -> void:
+	var id: int = multiplayer.get_remote_sender_id()
 	players[id] = new_player_name
 	player_list_changed.emit()
 
 
-func unregister_player(id):
+func unregister_player(id) -> void:
 	players.erase(id)
 	player_list_changed.emit()
 
 
 @rpc("call_local")
-func load_world():
+func load_world() -> void:
 	# Change scene.
 	var world = load("res://scenes/world.tscn").instantiate()
 	get_tree().get_root().add_child(world)
@@ -92,29 +91,29 @@ func load_world():
 	get_tree().set_pause(false) # Unpause and unleash the game!
 
 
-func host_game(new_player_name):
+func host_game(new_player_name) -> void:
 	player_name = new_player_name
 	peer = ENetMultiplayerPeer.new()
 	peer.create_server(DEFAULT_PORT, MAX_PEERS)
 	multiplayer.set_multiplayer_peer(peer)
 
 
-func join_game(ip, new_player_name):
+func join_game(ip, new_player_name) -> void:
 	player_name = new_player_name
 	peer = ENetMultiplayerPeer.new()
 	peer.create_client(ip, DEFAULT_PORT)
 	multiplayer.set_multiplayer_peer(peer)
 
 
-func get_player_list():
+func get_player_list() -> Array[String]:
 	return players.values()
 
 
-func get_player_name():
+func get_player_name() -> String:
 	return player_name
 
 
-func begin_game():
+func begin_game() -> void:
 	assert(multiplayer.is_server())
 	load_world.rpc()
 
@@ -138,7 +137,7 @@ func begin_game():
 		world.get_node("Players").add_child(player)
 
 
-func end_game():
+func end_game() -> void:
 	if has_node("/root/World"): # Game is in progress.
 		# End it
 		get_node("/root/World").queue_free()
@@ -147,7 +146,7 @@ func end_game():
 	players.clear()
 
 
-func _ready():
+func _ready() -> void:
 	multiplayer.peer_connected.connect(_player_connected)
 	multiplayer.peer_disconnected.connect(_player_disconnected)
 	multiplayer.connected_to_server.connect(_connected_ok)

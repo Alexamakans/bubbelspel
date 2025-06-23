@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dl8sae6e1wjis"]
+[gd_scene load_steps=16 format=3 uid="uid://dl8sae6e1wjis"]
 
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
 
@@ -34,6 +34,15 @@ bg_color = Color(0.46, 0.46, 0.46, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dqkch"]
 bg_color = Color(0.46, 0.46, 0.46, 1)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3vyb7"]
+
+[sub_resource type="Sky" id="Sky_4wyf3"]
+sky_material = SubResource("ProceduralSkyMaterial_3vyb7")
+
+[sub_resource type="Environment" id="Environment_g2els"]
+background_mode = 2
+sky = SubResource("Sky_4wyf3")
 
 [node name="player" type="CharacterBody3D" node_paths=PackedStringArray("speed_forward_bar", "speed_reverse_bar", "rot_starboard_bar", "rot_portside_bar")]
 script = ExtResource("1_3vyb7")
@@ -145,3 +154,9 @@ step = 0.001
 value = 0.1
 fill_mode = 1
 show_percentage = false
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.902555, 0.430574, 0, -0.430574, 0.902555, 0, 120.123, 200.292)
+environment = SubResource("Environment_g2els")
+current = true
+fov = 80.0

@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://dl8sae6e1wjis"]
+[gd_scene load_steps=20 format=3 uid="uid://dl8sae6e1wjis"]
 
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
+[ext_resource type="Script" uid="uid://ctxyiw2s17xid" path="res://scenes/player_camera.gd" id="2_g2els"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u8vuu"]
 size = Vector3(1, 0.415, 4.504)
@@ -16,6 +17,12 @@ size = Vector3(18, 5, 60)
 
 [sub_resource type="BoxMesh" id="BoxMesh_dqkch"]
 size = Vector3(18, 5, 33.35)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fjrip"]
+size = Vector3(6.015, 5, 33.35)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g2els"]
+albedo_color = Color(0.2, 0.2, 0.2, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_qlg0r"]
 size = Vector3(18, 20, 30)
@@ -43,6 +50,10 @@ sky_material = SubResource("ProceduralSkyMaterial_3vyb7")
 [sub_resource type="Environment" id="Environment_g2els"]
 background_mode = 2
 sky = SubResource("Sky_4wyf3")
+
+[sub_resource type="Curve" id="Curve_g2els"]
+_data = [Vector2(0, 0), 0.0, 0.487478, 0, 0, Vector2(0.501799, 0.885445), 1.19983, 1.19983, 0, 0, Vector2(1, 1), -0.436029, 0.0, 0, 0]
+point_count = 3
 
 [node name="player" type="CharacterBody3D" node_paths=PackedStringArray("speed_forward_bar", "speed_reverse_bar", "rot_starboard_bar", "rot_portside_bar")]
 script = ExtResource("1_3vyb7")
@@ -75,6 +86,11 @@ mesh = SubResource("BoxMesh_qhqgy")
 [node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.4003, -70.6084)
 mesh = SubResource("BoxMesh_dqkch")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.790176, -0.612879, 0, 0.612879, 0.790176, 0, 17.5979, -71.6043)
+mesh = SubResource("BoxMesh_fjrip")
+surface_material_override/0 = SubResource("StandardMaterial3D_g2els")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15.7693, 7.91709)
@@ -155,8 +171,20 @@ value = 0.1
 fill_mode = 1
 show_percentage = false
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.902555, 0.430574, 0, -0.430574, 0.902555, 0, 120.123, 200.292)
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("focus_point")]
+transform = Transform3D(1, 0, 0, 0, 0.902555, 0.430574, 0, -0.430574, 0.902555, 1.29224, 120.123, 198.017)
+top_level = true
 environment = SubResource("Environment_g2els")
 current = true
 fov = 80.0
+script = ExtResource("2_g2els")
+focus_point = NodePath("../CameraFocusPoint")
+distance_min = 50.0
+distance_max = 800.0
+zoom_speed = 1400.0
+y_look_speed = 0.5
+x_look_curve = SubResource("Curve_g2els")
+
+[node name="CameraFocusPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 27.446, 0)
+gizmo_extents = 5.0

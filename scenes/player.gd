@@ -35,8 +35,8 @@ func _process(delta: float) -> void:
 	var input_rot = Input.get_axis("move_starboard", "move_portside") * delta * rot_acceleration
 	rot_current = clampf(rot_current + input_rot, -rot_angle_max, rot_angle_max)
 
-	rot_starboard_bar.value = maxf(0, rot_current / rot_angle_max)
-	rot_portside_bar.value = maxf(0, -rot_current / rot_angle_max)
+	rot_portside_bar.value = maxf(0, rot_current / rot_angle_max)
+	rot_starboard_bar.value = maxf(0, -rot_current / rot_angle_max)
 
 func _physics_process(delta: float) -> void:
 	position += -global_transform.basis.z * speed_current * delta

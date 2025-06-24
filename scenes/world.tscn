@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ck4sm14vsee4w"]
+[gd_scene load_steps=45 format=3 uid="uid://ck4sm14vsee4w"]
 
 [ext_resource type="Shader" uid="uid://c3kjd10ln4c6b" path="res://scenes/world.gdshader" id="1_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://dl8sae6e1wjis" path="res://scenes/player.tscn" id="1_nnsk1"]
@@ -6,6 +6,22 @@
 [ext_resource type="Texture2D" uid="uid://c10hrir6psxqp" path="res://textures/noiseTexture.png" id="3_qfnet"]
 [ext_resource type="Script" uid="uid://ctxyiw2s17xid" path="res://scenes/player_camera.gd" id="4_k0juu"]
 [ext_resource type="Script" uid="uid://d3cf3u1ll5xlv" path="res://globals.gd" id="5_71j4m"]
+[ext_resource type="Texture2D" uid="uid://bgscm75n1177o" path="res://textures/Ground051_1K-PNG_Color.png" id="7_oo54l"]
+[ext_resource type="Texture2D" uid="uid://hjcpldyjvijb" path="res://textures/Ground051_1K-PNG_NormalGL.png" id="8_kpybi"]
+[ext_resource type="Texture2D" uid="uid://b3jnppdn0pdhn" path="res://textures/Ground029_1K-PNG_Color.png" id="9_ctatt"]
+[ext_resource type="Texture2D" uid="uid://84hy8e76i7iq" path="res://textures/Ground029_1K-PNG_NormalGL.png" id="10_xgqkh"]
+[ext_resource type="Texture2D" uid="uid://cmicx4xfuo08i" path="res://textures/Ground049A_1K-PNG_Color.png" id="11_munwf"]
+[ext_resource type="Texture2D" uid="uid://bh70dr42hugrm" path="res://textures/Ground049A_1K-PNG_NormalGL.png" id="12_ts3gi"]
+[ext_resource type="Texture2D" uid="uid://ckav87psarnom" path="res://textures/Ground049B_1K-PNG_Color.png" id="13_0nbtd"]
+[ext_resource type="Texture2D" uid="uid://dtvgwsomi1tqa" path="res://textures/Ground049B_1K-PNG_NormalGL.png" id="14_37qwj"]
+[ext_resource type="Texture2D" uid="uid://cmc3oldrxfgu" path="res://textures/Ground050_1K-PNG_Color.png" id="15_navra"]
+[ext_resource type="Texture2D" uid="uid://7uty8rehk5er" path="res://textures/Ground050_1K-PNG_NormalGL.png" id="16_luhhm"]
+[ext_resource type="Texture2D" uid="uid://c2eooi0n1pys" path="res://textures/Grass008_1K-PNG_Color.png" id="17_fh13f"]
+[ext_resource type="Texture2D" uid="uid://bf2ikumumje85" path="res://textures/Grass008_1K-PNG_NormalGL.png" id="18_rup4s"]
+[ext_resource type="Texture2D" uid="uid://dqk7tdiwjptd8" path="res://textures/Rock028_1K-PNG_Color.png" id="19_4kbfs"]
+[ext_resource type="Texture2D" uid="uid://bh20avm8dbxre" path="res://textures/Rock028_1K-PNG_NormalGL.png" id="20_f17e3"]
+[ext_resource type="Texture2D" uid="uid://fo3853vkwrti" path="res://textures/Rock030_1K-PNG_Color.png" id="21_x2olw"]
+[ext_resource type="Texture2D" uid="uid://c18ip76millu8" path="res://textures/Rock030_1K-PNG_NormalGL.png" id="22_817gm"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_rwgxs"]
 size = Vector2(1200, 1200)
@@ -43,15 +59,178 @@ sky = SubResource("Sky_4wyf3")
 _data = [Vector2(0, 0), 0.0, 0.487478, 0, 0, Vector2(0.501799, 0.885445), 1.19983, 1.19983, 0, 0, Vector2(1, 1), -0.436029, 0.0, 0, 0]
 point_count = 3
 
+[sub_resource type="Gradient" id="Gradient_rwgxs"]
+offsets = PackedFloat32Array(0.2, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4wyf3"]
+noise_type = 2
+frequency = 0.03
+cellular_jitter = 3.0
+cellular_return_type = 0
+domain_warp_enabled = true
+domain_warp_type = 1
+domain_warp_amplitude = 50.0
+domain_warp_fractal_type = 2
+domain_warp_fractal_lacunarity = 1.5
+domain_warp_fractal_gain = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_k0juu"]
+seamless = true
+color_ramp = SubResource("Gradient_rwgxs")
+noise = SubResource("FastNoiseLite_4wyf3")
+
+[sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_ggc52"]
+_shader_parameters = {
+&"bias_distance": 512.0,
+&"blend_sharpness": 0.87,
+&"depth_blur": 0.0,
+&"enable_macro_variation": true,
+&"enable_projection": true,
+&"height_blending": true,
+&"macro_variation1": Color(1, 1, 1, 1),
+&"macro_variation2": Color(1, 1, 1, 1),
+&"macro_variation_slope": 0.333,
+&"mipmap_bias": 1.0,
+&"noise1_angle": 0.0,
+&"noise1_offset": Vector2(0.5, 0.5),
+&"noise1_scale": 0.04,
+&"noise2_scale": 0.076,
+&"noise3_scale": 0.225,
+&"noise_texture": SubResource("NoiseTexture2D_k0juu"),
+&"projection_angular_division": 2.0,
+&"projection_threshold": 0.8,
+&"world_space_normal_blend": true
+}
+world_background = 0
+show_region_grid = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qfnet"]
+transparency = 4
+cull_mode = 2
+vertex_color_use_as_albedo = true
+backlight_enabled = true
+backlight = Color(0.5, 0.5, 0.5, 1)
+distance_fade_mode = 1
+distance_fade_min_distance = 128.0
+distance_fade_max_distance = 96.0
+
+[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_i7141"]
+generated_type = 1
+height_offset = 0.5
+material_override = SubResource("StandardMaterial3D_qfnet")
+last_lod = 0
+last_shadow_lod = 0
+lod0_range = 128.0
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_rga7q"]
+name = "Ground051"
+albedo_texture = ExtResource("7_oo54l")
+normal_texture = ExtResource("8_kpybi")
+uv_scale = 0.05
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_6oujy"]
+name = "Ground029_1K-PNG_Color"
+id = 1
+albedo_texture = ExtResource("9_ctatt")
+normal_texture = ExtResource("10_xgqkh")
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_hi6a0"]
+name = "Ground049A_1K-PNG_Color"
+id = 2
+albedo_texture = ExtResource("11_munwf")
+normal_texture = ExtResource("12_ts3gi")
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_eo1xk"]
+name = "Ground049B_1K-PNG_Color"
+id = 3
+albedo_texture = ExtResource("13_0nbtd")
+normal_texture = ExtResource("14_37qwj")
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_18clu"]
+name = "Ground050_1K-PNG_Color"
+id = 4
+albedo_texture = ExtResource("15_navra")
+normal_texture = ExtResource("16_luhhm")
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_4wdv8"]
+name = "Grass008_1K-PNG_Color"
+id = 5
+albedo_color = Color(0.630818, 0.560561, 0.464168, 1)
+albedo_texture = ExtResource("17_fh13f")
+normal_texture = ExtResource("18_rup4s")
+uv_scale = 0.08
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_d46x8"]
+name = "Rock028_1K-PNG_Color"
+id = 6
+albedo_texture = ExtResource("19_4kbfs")
+normal_texture = ExtResource("20_f17e3")
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_3l05q"]
+name = "Rock030_1K-PNG_Color"
+id = 7
+albedo_texture = ExtResource("21_x2olw")
+normal_texture = ExtResource("22_817gm")
+
+[sub_resource type="Terrain3DAssets" id="Terrain3DAssets_l8ah6"]
+mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_i7141")])
+texture_list = Array[Terrain3DTextureAsset]([SubResource("Terrain3DTextureAsset_rga7q"), SubResource("Terrain3DTextureAsset_6oujy"), SubResource("Terrain3DTextureAsset_hi6a0"), SubResource("Terrain3DTextureAsset_eo1xk"), SubResource("Terrain3DTextureAsset_18clu"), SubResource("Terrain3DTextureAsset_4wdv8"), SubResource("Terrain3DTextureAsset_d46x8"), SubResource("Terrain3DTextureAsset_3l05q")])
+
 [node name="Node3D" type="Node3D"]
 
 [node name="Globals" type="Node" parent="." node_paths=PackedStringArray("water")]
 script = ExtResource("5_71j4m")
 water = NodePath("../water")
-metadata/_custom_type_script = "uid://d3cf3u1ll5xlv"
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://dl8sae6e1wjis")
+spawn_path = NodePath("../Players")
+
+[node name="Players" type="Node3D" parent="."]
+
+[node name="SpawnPoints" type="Node3D" parent="."]
+
+[node name="0" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.0825, 0, 495.848)
+
+[node name="1" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 304.91, 0, 425.437)
+
+[node name="2" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 501.294, 0, 155.698)
+
+[node name="3" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 594.63, 0, -228.289)
+
+[node name="4" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 454.207, 0, -479.648)
+
+[node name="5" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 86.0767, 0, -752.09)
+
+[node name="6" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -304.665, 6.10352e-05, -730.092)
+
+[node name="7" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -670.907, 6.10352e-05, -468.625)
+
+[node name="8" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -795.234, 6.10352e-05, -40.2661)
+
+[node name="9" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -801.225, 6.10352e-05, 320.753)
+
+[node name="10" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -538.035, 6.10352e-05, 589.382)
+
+[node name="11" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -248.793, 6.10352e-05, 713.808)
+
+[node name="12" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -248.793, 6.10352e-05, 713.808)
 
 [node name="water" type="MeshInstance3D" parent="."]
-unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0199623, 0.15757, -0.00815582)
 mesh = SubResource("PlaneMesh_rwgxs")
 surface_material_override/0 = SubResource("ShaderMaterial_k0juu")
@@ -121,3 +300,12 @@ x_look_curve = SubResource("Curve_i7141")
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 offset_right = 280.0
 offset_bottom = 138.0
+
+[node name="Terrain3D" type="Terrain3D" parent="."]
+data_directory = "res://terrain"
+material = SubResource("Terrain3DMaterial_ggc52")
+assets = SubResource("Terrain3DAssets_l8ah6")
+show_grid = true
+show_region_grid = true
+top_level = true
+metadata/_edit_lock_ = true

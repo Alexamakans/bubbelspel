@@ -1,8 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://dl8sae6e1wjis"]
+[gd_scene load_steps=29 format=3 uid="uid://dl8sae6e1wjis"]
 
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
-[ext_resource type="Script" uid="uid://bmd6kgqdisbye" path="res://scenes/Floater.gd" id="2_g2els"]
-[ext_resource type="Script" uid="uid://ddq4spibswv02" path="res://scenes/pidcontroller.gd" id="3_qhqgy"]
+[ext_resource type="Script" path="res://scenes/Floater.gd" id="2_g2els"]
+[ext_resource type="Script" path="res://scenes/pidcontroller.gd" id="3_qhqgy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qhqgy"]
 albedo_color = Color(0.811183, 0.957611, 0, 1)
@@ -12,7 +12,7 @@ radius = 2.951
 height = 5.902
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u8vuu"]
-size = Vector3(1, 0.415, 4.504)
+size = Vector3(2.73413, 1.57422, 23.9258)
 
 [sub_resource type="BoxMesh" id="BoxMesh_3vyb7"]
 size = Vector3(28, 17, 240)
@@ -53,6 +53,54 @@ bg_color = Color(0.46, 0.46, 0.46, 1)
 [sub_resource type="PrismMesh" id="PrismMesh_g2els"]
 size = Vector3(28, 20, 240)
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qhqgy"]
+frequency = 0.0127
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qhqgy"]
+noise = SubResource("FastNoiseLite_qhqgy")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dqkch"]
+blend_mode = 1
+depth_draw_mode = 1
+albedo_texture = SubResource("NoiseTexture2D_qhqgy")
+
+[sub_resource type="Curve" id="Curve_qlg0r"]
+_data = [Vector2(0, 0), 0.0, 7.71915, 0, 0, Vector2(0.0857143, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.519851, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_dqkch"]
+curve = SubResource("Curve_qlg0r")
+
+[sub_resource type="Curve" id="Curve_tuyoq"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_tuyoq"]
+curve = SubResource("Curve_tuyoq")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fjrip"]
+emission_shape_scale = Vector3(1, 0, 1)
+emission_shape = 1
+emission_sphere_radius = 1.22
+initial_velocity_min = 1.0
+initial_velocity_max = 4.0
+gravity = Vector3(0, 0, 0)
+scale_max = 4.0
+scale_curve = SubResource("CurveTexture_dqkch")
+turbulence_enabled = true
+turbulence_noise_strength = 5.45
+turbulence_noise_speed = Vector3(4, 0, 4)
+turbulence_noise_speed_random = 1.83
+turbulence_influence_min = 0.195
+turbulence_influence_max = 0.302
+turbulence_influence_over_life = SubResource("CurveTexture_tuyoq")
+
+[sub_resource type="SphereMesh" id="SphereMesh_smehm"]
+radius = 0.25
+height = 0.1
+rings = 5
+is_hemisphere = true
+
 [node name="player" type="RigidBody3D" node_paths=PackedStringArray("speed_forward_bar", "speed_reverse_bar", "rot_starboard_bar", "rot_portside_bar")]
 gravity_scale = 0.0
 inertia = Vector3(50, 50, 50)
@@ -74,7 +122,6 @@ proportional_gain = 3.0
 derivative_gain = 8.0
 output_min = -200.0
 output_max = 200.0
-metadata/_custom_type_script = "uid://ddq4spibswv02"
 
 [node name="PIDController_Z" type="Node" parent="."]
 script = ExtResource("3_qhqgy")
@@ -83,7 +130,6 @@ integral_gain = 2.0
 derivative_gain = 2.0
 output_min = -200.0
 output_max = 200.0
-metadata/_custom_type_script = "uid://ddq4spibswv02"
 
 [node name="Floater" type="Node3D" parent="."]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, -12)
@@ -287,3 +333,13 @@ gizmo_extents = 5.0
 [node name="Kol" type="MeshInstance3D" parent="."]
 transform = Transform3D(-0.1, 8.74228e-09, 0, -8.74228e-09, -0.1, 0, 0, 0, 0.1, 0, -1.57829, 0)
 mesh = SubResource("PrismMesh_g2els")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.53703)
+material_override = SubResource("StandardMaterial3D_dqkch")
+amount = 50
+lifetime = 5.0
+explosiveness = 0.03
+randomness = 0.35
+process_material = SubResource("ParticleProcessMaterial_fjrip")
+draw_pass_1 = SubResource("SphereMesh_smehm")

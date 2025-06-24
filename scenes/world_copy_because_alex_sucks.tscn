@@ -27,29 +27,16 @@ subdivide_depth = 512
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k0juu"]
 render_priority = 0
 shader = ExtResource("1_ebq8p")
+shader_parameter/water_color = Vector4(0, 0, 0, 0)
+shader_parameter/deep_water_color = Vector4(0, 0, 0, 0)
 shader_parameter/wave_a = Vector3(1, 0.005, 1200)
 shader_parameter/wave_a_dir = Vector2(1, 0)
-shader_parameter/wave_a_time_scale = 0.1
 shader_parameter/wave_b = Vector3(1.4, 0.01, 600)
 shader_parameter/wave_b_dir = Vector2(0.3, 1)
-shader_parameter/wave_b_time_scale = 0.3
 shader_parameter/wave_c = Vector3(1.6, 0.012, 400)
 shader_parameter/wave_c_dir = Vector2(1, 0.5)
-shader_parameter/wave_c_time_scale = 0.6
-shader_parameter/wave_d = Vector3(0.9, 0.014, 200)
-shader_parameter/wave_d_dir = Vector2(1, 0.5)
-shader_parameter/wave_d_time_scale = 1.2
-shader_parameter/wave_e = Vector3(0.4, 0.8, 5)
-shader_parameter/wave_e_dir = Vector2(0.38, 0.55)
-shader_parameter/wave_e_time_scale = 1.2
-shader_parameter/height_scale = 4.0
-shader_parameter/beer_factor = 0.8
-shader_parameter/_DepthGradientShallow = Color(0.00130653, 0.14774, 0.238371, 0.968627)
-shader_parameter/_DepthGradientDeep = Color(1.20327e-07, 0.158371, 0.398549, 0.988235)
-shader_parameter/_DepthMaxDistance = 0.5
-shader_parameter/_DepthFactor = 1.0
-shader_parameter/sunDirection = Vector3(0, -1, -0.5)
-shader_parameter/sunColor = Vector3(1, 0.95, 0.9)
+shader_parameter/foam_level = 0.4
+shader_parameter/time = 0.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_4kbfs"]
 size = Vector3(28, 8, 240)

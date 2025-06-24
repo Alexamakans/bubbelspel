@@ -109,7 +109,6 @@ script = ExtResource("1_q1ug2")
 speed_forward_max = 32.0
 speed_reverse_max = 16.0
 speed_acceleration = 6.0
-rot_angle_max = 15.0
 rot_acceleration = 40.0
 speed_forward_bar = NodePath("ProgressBarForward")
 speed_reverse_bar = NodePath("ProgressBarReverse")

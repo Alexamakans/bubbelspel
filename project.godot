@@ -19,6 +19,11 @@ config/icon="res://icon.svg"
 
 gamestate="*res://gamestate.gd"
 
+[display]
+
+window/size/viewport_width=2500
+window/size/viewport_height=720
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/terrain_3d/plugin.cfg")

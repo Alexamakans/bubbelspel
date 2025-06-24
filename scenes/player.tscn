@@ -1,13 +1,21 @@
-[gd_scene load_steps=30 format=3 uid="uid://dl8sae6e1wjis"]
+[gd_scene load_steps=20 format=3 uid="uid://dl8sae6e1wjis"]
 
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
-[ext_resource type="Script" uid="uid://ctxyiw2s17xid" path="res://scenes/player_camera.gd" id="2_g2els"]
+[ext_resource type="Script" uid="uid://bmd6kgqdisbye" path="res://scenes/Floater.gd" id="2_g2els"]
+[ext_resource type="Script" uid="uid://ddq4spibswv02" path="res://scenes/pidcontroller.gd" id="3_qhqgy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qhqgy"]
+albedo_color = Color(0.811183, 0.957611, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_dqkch"]
+radius = 2.951
+height = 5.902
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u8vuu"]
 size = Vector3(1, 0.415, 4.504)
 
 [sub_resource type="BoxMesh" id="BoxMesh_3vyb7"]
-size = Vector3(28, 8, 240)
+size = Vector3(28, 17, 240)
 
 [sub_resource type="BoxMesh" id="BoxMesh_g2els"]
 size = Vector3(18, 5, 60)
@@ -42,111 +50,163 @@ bg_color = Color(0.46, 0.46, 0.46, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dqkch"]
 bg_color = Color(0.46, 0.46, 0.46, 1)
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3vyb7"]
+[sub_resource type="PrismMesh" id="PrismMesh_g2els"]
+size = Vector3(28, 20, 240)
 
-[sub_resource type="Sky" id="Sky_4wyf3"]
-sky_material = SubResource("ProceduralSkyMaterial_3vyb7")
-
-[sub_resource type="Environment" id="Environment_g2els"]
-background_mode = 2
-sky = SubResource("Sky_4wyf3")
-
-[sub_resource type="Curve" id="Curve_g2els"]
-_data = [Vector2(0, 0), 0.0, 0.487478, 0, 0, Vector2(0.501799, 0.885445), 1.19983, 1.19983, 0, 0, Vector2(1, 1), -0.436029, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_g2els"]
-frequency = 0.0127
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qhqgy"]
-noise = SubResource("FastNoiseLite_g2els")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dqkch"]
-blend_mode = 1
-depth_draw_mode = 1
-albedo_texture = SubResource("NoiseTexture2D_qhqgy")
-
-[sub_resource type="Curve" id="Curve_qhqgy"]
-_data = [Vector2(0, 0), 0.0, 7.71915, 0, 0, Vector2(0.0857143, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.519851, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_dqkch"]
-curve = SubResource("Curve_qhqgy")
-
-[sub_resource type="Curve" id="Curve_qlg0r"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_tuyoq"]
-curve = SubResource("Curve_qlg0r")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_g2els"]
-emission_shape_scale = Vector3(1, 0, 1)
-emission_shape = 1
-emission_sphere_radius = 12.17
-initial_velocity_min = 1.0
-initial_velocity_max = 4.0
-gravity = Vector3(0, 0, 0)
-scale_max = 4.0
-scale_curve = SubResource("CurveTexture_dqkch")
-turbulence_enabled = true
-turbulence_noise_strength = 5.45
-turbulence_noise_speed = Vector3(4, 0, 4)
-turbulence_noise_speed_random = 1.83
-turbulence_influence_min = 0.195
-turbulence_influence_max = 0.302
-turbulence_influence_over_life = SubResource("CurveTexture_tuyoq")
-
-[sub_resource type="SphereMesh" id="SphereMesh_fjrip"]
-radius = 2.5
-rings = 5
-is_hemisphere = true
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_g2els"]
-
-[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("speed_forward_bar", "speed_reverse_bar", "rot_starboard_bar", "rot_portside_bar")]
+[node name="player" type="RigidBody3D" node_paths=PackedStringArray("speed_forward_bar", "speed_reverse_bar", "rot_starboard_bar", "rot_portside_bar")]
+gravity_scale = 0.0
+inertia = Vector3(50, 50, 50)
+angular_damp_mode = 1
+angular_damp = 20.0
 script = ExtResource("1_3vyb7")
 speed_forward_max = 32.0
 speed_reverse_max = 16.0
 speed_acceleration = 6.0
-rot_angle_max = 15.0
-rot_acceleration = 40.0
 speed_forward_bar = NodePath("ProgressBarForward")
 speed_reverse_bar = NodePath("ProgressBarReverse")
 rot_starboard_bar = NodePath("ProgressBarStarboard")
 rot_portside_bar = NodePath("ProgressBarPortside")
 metadata/_edit_vertical_guides_ = [576.0]
 
+[node name="PIDController_X" type="Node" parent="."]
+script = ExtResource("3_qhqgy")
+proportional_gain = 3.0
+derivative_gain = 8.0
+output_min = -200.0
+output_max = 200.0
+metadata/_custom_type_script = "uid://ddq4spibswv02"
+
+[node name="PIDController_Z" type="Node" parent="."]
+script = ExtResource("3_qhqgy")
+proportional_gain = 3.0
+integral_gain = 2.0
+derivative_gain = 2.0
+output_min = -200.0
+output_max = 200.0
+metadata/_custom_type_script = "uid://ddq4spibswv02"
+
+[node name="Floater" type="Node3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, -12)
+script = ExtResource("2_g2els")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
+
+[node name="Marker" type="MeshInstance3D" parent="Floater"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
+
+[node name="Floater2" type="Node3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 2, 0, 0)
+script = ExtResource("2_g2els")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
+
+[node name="Marker" type="MeshInstance3D" parent="Floater2"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
+skeleton = NodePath("../../Floater")
+
+[node name="Floater3" type="Node3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -2, 0, 0)
+script = ExtResource("2_g2els")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
+
+[node name="Marker" type="MeshInstance3D" parent="Floater3"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
+
+[node name="Floater5" type="Node3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 2, 0, -8)
+script = ExtResource("2_g2els")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
+
+[node name="Marker" type="MeshInstance3D" parent="Floater5"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
+skeleton = NodePath("../../Floater")
+
+[node name="Floater6" type="Node3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -2, 0, -8)
+script = ExtResource("2_g2els")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
+
+[node name="Marker" type="MeshInstance3D" parent="Floater6"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
+
+[node name="Floater7" type="Node3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 2, 0, 8)
+script = ExtResource("2_g2els")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
+
+[node name="Marker" type="MeshInstance3D" parent="Floater7"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
+skeleton = NodePath("../../Floater")
+
+[node name="Floater8" type="Node3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -2, 0, 8)
+script = ExtResource("2_g2els")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
+
+[node name="Marker" type="MeshInstance3D" parent="Floater8"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
+
+[node name="Floater4" type="Node3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 12)
+script = ExtResource("2_g2els")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
+
+[node name="Marker" type="MeshInstance3D" parent="Floater4"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.282017, 0)
 shape = SubResource("BoxShape3D_u8vuu")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.245111, 0)
 mesh = SubResource("BoxMesh_3vyb7")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.4003, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.32205, 0)
 mesh = SubResource("BoxMesh_g2els")
 
 [node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.4003, 76.3508)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.32205, 7.63508)
 mesh = SubResource("BoxMesh_qhqgy")
 
 [node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.4003, -70.6084)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.32205, -7.06084)
 mesh = SubResource("BoxMesh_dqkch")
 
 [node name="MeshInstance3D7" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.790176, -0.612879, 0, 0.612879, 0.790176, 0, 17.5979, -71.6043)
+transform = Transform3D(0.1, 0, 0, 0, 0.0790176, -0.0612879, 0, 0.0612879, 0.0790176, 0, 2.04181, -7.16043)
 mesh = SubResource("BoxMesh_fjrip")
 surface_material_override/0 = SubResource("StandardMaterial3D_g2els")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15.7693, 7.91709)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.85895, 0.791709)
 mesh = SubResource("BoxMesh_qlg0r")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8147e-06, 37.2532, 3.1108)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -3.8147e-07, 4.00734, 0.31108)
 mesh = SubResource("BoxMesh_tuyoq")
 
 [node name="ProgressBarForward" type="ProgressBar" parent="."]
@@ -220,33 +280,10 @@ value = 0.1
 fill_mode = 1
 show_percentage = false
 
-[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("focus_point")]
-transform = Transform3D(1, 0, 0, 0, 0.902555, 0.430574, 0, -0.430574, 0.902555, 1.29224, 120.123, 198.017)
-top_level = true
-environment = SubResource("Environment_g2els")
-current = true
-fov = 80.0
-script = ExtResource("2_g2els")
-focus_point = NodePath("../CameraFocusPoint")
-distance_min = 50.0
-distance_max = 800.0
-zoom_speed = 1400.0
-y_look_speed = 0.5
-x_look_curve = SubResource("Curve_g2els")
-
 [node name="CameraFocusPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 27.446, 0)
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 3.02662, 0)
 gizmo_extents = 5.0
 
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 100.017)
-material_override = SubResource("StandardMaterial3D_dqkch")
-amount = 50
-lifetime = 5.0
-explosiveness = 0.03
-randomness = 0.35
-process_material = SubResource("ParticleProcessMaterial_g2els")
-draw_pass_1 = SubResource("SphereMesh_fjrip")
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_g2els")
+[node name="Kol" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.1, 8.74228e-09, 0, -8.74228e-09, -0.1, 0, 0, 0, 0.1, 0, -1.57829, 0)
+mesh = SubResource("PrismMesh_g2els")

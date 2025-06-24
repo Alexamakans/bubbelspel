@@ -16,6 +16,9 @@ data_*/
 mono_crash.*.json
 android/
 
+# Alex
+.null-ls*
+
 # Build results
 [Bb]uilds/
 [Bb]uild/

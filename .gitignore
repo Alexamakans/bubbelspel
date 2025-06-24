@@ -17,6 +17,7 @@ mono_crash.*.json
 android/
 
 # Alex
+alex/
 .null-ls*
 
 # Build results

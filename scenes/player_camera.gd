@@ -17,16 +17,27 @@ func _ready() -> void:
 	distance_current = vector.length()
 
 	var camera_forward: Vector3 = -global_basis.z
-	y_rad_current = atan2(camera_forward.z, camera_forward.x)
+	y_rad_current = atan2(camera_forward.x, -camera_forward.z)
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _process(delta: float) -> void:
+	if not current:
+		var camera_forward: Vector3 = -global_basis.z
+		y_rad_current = atan2(camera_forward.x, -camera_forward.z)
+		update()
+		return
+
 	if Input.is_action_just_pressed("look_zoom_in"):
 		distance_current -= zoom_speed * delta
 		distance_current = clampf(distance_current, distance_min, distance_max)
 	if Input.is_action_just_pressed("look_zoom_out"):
 		distance_current += zoom_speed * delta
 		distance_current = clampf(distance_current, distance_min, distance_max)
+	
+	update()
 
+
+func update() -> void:
 	var dist_01 = inverse_lerp(distance_min, distance_max, distance_current)
 	var curved_t = x_look_curve.sample(dist_01)
 	var x_rad = deg_to_rad(lerpf(x_look_deg_close, x_look_deg_far, curved_t))
@@ -38,10 +49,11 @@ func _process(delta: float) -> void:
 	#forward = forward.normalized()
 
 	global_position = focus_point.global_position - forward * distance_current
-
 	look_at(focus_point.global_position)
 
 func _input(event: InputEvent) -> void:
+	if not current:
+		return
 	if event is InputEventMouseMotion:
 		y_rad_current += deg_to_rad(event.relative.x * y_look_speed)
 

@@ -1,0 +1,303 @@
+[gd_scene load_steps=44 format=3 uid="uid://cjr3qi8hsw25r"]
+
+[ext_resource type="Shader" uid="uid://c3kjd10ln4c6b" path="res://scenes/world.gdshader" id="1_ebq8p"]
+[ext_resource type="PackedScene" uid="uid://dl8sae6e1wjis" path="res://scenes/player.tscn" id="2_o5hl4"]
+[ext_resource type="Texture2D" uid="uid://bgscm75n1177o" path="res://textures/Ground051_1K-PNG_Color.png" id="3_gofwx"]
+[ext_resource type="Texture2D" uid="uid://hjcpldyjvijb" path="res://textures/Ground051_1K-PNG_NormalGL.png" id="4_ymgfa"]
+[ext_resource type="Texture2D" uid="uid://b3jnppdn0pdhn" path="res://textures/Ground029_1K-PNG_Color.png" id="5_04x4y"]
+[ext_resource type="Texture2D" uid="uid://84hy8e76i7iq" path="res://textures/Ground029_1K-PNG_NormalGL.png" id="6_suy7y"]
+[ext_resource type="Texture2D" uid="uid://cmicx4xfuo08i" path="res://textures/Ground049A_1K-PNG_Color.png" id="7_hvv48"]
+[ext_resource type="Texture2D" uid="uid://bh70dr42hugrm" path="res://textures/Ground049A_1K-PNG_NormalGL.png" id="8_rjwjh"]
+[ext_resource type="Texture2D" uid="uid://ckav87psarnom" path="res://textures/Ground049B_1K-PNG_Color.png" id="9_x6yjt"]
+[ext_resource type="Texture2D" uid="uid://dtvgwsomi1tqa" path="res://textures/Ground049B_1K-PNG_NormalGL.png" id="10_fogts"]
+[ext_resource type="Texture2D" uid="uid://cmc3oldrxfgu" path="res://textures/Ground050_1K-PNG_Color.png" id="11_ie48y"]
+[ext_resource type="Texture2D" uid="uid://7uty8rehk5er" path="res://textures/Ground050_1K-PNG_NormalGL.png" id="12_28aks"]
+[ext_resource type="Texture2D" uid="uid://c2eooi0n1pys" path="res://textures/Grass008_1K-PNG_Color.png" id="13_qq2ar"]
+[ext_resource type="Texture2D" uid="uid://bf2ikumumje85" path="res://textures/Grass008_1K-PNG_NormalGL.png" id="14_gvfu3"]
+[ext_resource type="Texture2D" uid="uid://dqk7tdiwjptd8" path="res://textures/Rock028_1K-PNG_Color.png" id="15_h104r"]
+[ext_resource type="Texture2D" uid="uid://bh20avm8dbxre" path="res://textures/Rock028_1K-PNG_NormalGL.png" id="16_jmi2s"]
+[ext_resource type="Texture2D" uid="uid://fo3853vkwrti" path="res://textures/Rock030_1K-PNG_Color.png" id="17_gb7bq"]
+[ext_resource type="Texture2D" uid="uid://c18ip76millu8" path="res://textures/Rock030_1K-PNG_NormalGL.png" id="18_cql2h"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_rwgxs"]
+size = Vector2(2000, 2000)
+subdivide_width = 512
+subdivide_depth = 512
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k0juu"]
+render_priority = 0
+shader = ExtResource("1_ebq8p")
+shader_parameter/wave_a = Vector3(1, 0.005, 1200)
+shader_parameter/wave_a_dir = Vector2(1, 0)
+shader_parameter/wave_a_time_scale = 0.1
+shader_parameter/wave_b = Vector3(1.4, 0.01, 600)
+shader_parameter/wave_b_dir = Vector2(0.3, 1)
+shader_parameter/wave_b_time_scale = 0.3
+shader_parameter/wave_c = Vector3(1.6, 0.012, 400)
+shader_parameter/wave_c_dir = Vector2(1, 0.5)
+shader_parameter/wave_c_time_scale = 0.6
+shader_parameter/wave_d = Vector3(0.9, 0.014, 200)
+shader_parameter/wave_d_dir = Vector2(1, 0.5)
+shader_parameter/wave_d_time_scale = 1.2
+shader_parameter/wave_e = Vector3(0.4, 0.8, 5)
+shader_parameter/wave_e_dir = Vector2(0.38, 0.55)
+shader_parameter/wave_e_time_scale = 1.2
+shader_parameter/height_scale = 4.0
+shader_parameter/beer_factor = 0.8
+shader_parameter/_DepthGradientShallow = Color(0.00130653, 0.14774, 0.238371, 0.968627)
+shader_parameter/_DepthGradientDeep = Color(1.20327e-07, 0.158371, 0.398549, 0.988235)
+shader_parameter/_DepthMaxDistance = 0.5
+shader_parameter/_DepthFactor = 1.0
+shader_parameter/sunDirection = Vector3(0, -1, -0.5)
+shader_parameter/sunColor = Vector3(1, 0.95, 0.9)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4kbfs"]
+size = Vector3(28, 8, 240)
+
+[sub_resource type="BoxMesh" id="BoxMesh_f17e3"]
+size = Vector3(18, 5, 60)
+
+[sub_resource type="BoxMesh" id="BoxMesh_x2olw"]
+size = Vector3(18, 5, 60)
+
+[sub_resource type="BoxMesh" id="BoxMesh_817gm"]
+size = Vector3(18, 5, 33.35)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ggc52"]
+size = Vector3(6.015, 5, 33.35)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l8ah6"]
+albedo_color = Color(0.2, 0.2, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_e75v4"]
+size = Vector3(18, 20, 30)
+
+[sub_resource type="BoxMesh" id="BoxMesh_8u370"]
+size = Vector3(5, 50, 5)
+
+[sub_resource type="Gradient" id="Gradient_rwgxs"]
+offsets = PackedFloat32Array(0.2, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4wyf3"]
+noise_type = 2
+frequency = 0.03
+cellular_jitter = 3.0
+cellular_return_type = 0
+domain_warp_enabled = true
+domain_warp_type = 1
+domain_warp_amplitude = 50.0
+domain_warp_fractal_type = 2
+domain_warp_fractal_lacunarity = 1.5
+domain_warp_fractal_gain = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_k0juu"]
+seamless = true
+color_ramp = SubResource("Gradient_rwgxs")
+noise = SubResource("FastNoiseLite_4wyf3")
+
+[sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_71j4m"]
+_shader_parameters = {
+&"bias_distance": 512.0,
+&"blend_sharpness": 0.87,
+&"depth_blur": 0.0,
+&"enable_macro_variation": true,
+&"enable_projection": true,
+&"height_blending": true,
+&"macro_variation1": Color(1, 1, 1, 1),
+&"macro_variation2": Color(1, 1, 1, 1),
+&"macro_variation_slope": 0.333,
+&"mipmap_bias": 1.0,
+&"noise1_angle": 0.0,
+&"noise1_offset": Vector2(0.5, 0.5),
+&"noise1_scale": 0.04,
+&"noise2_scale": 0.076,
+&"noise3_scale": 0.225,
+&"noise_texture": SubResource("NoiseTexture2D_k0juu"),
+&"projection_angular_division": 2.0,
+&"projection_threshold": 0.8,
+&"world_space_normal_blend": true
+}
+world_background = 0
+show_region_grid = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qfnet"]
+transparency = 4
+cull_mode = 2
+vertex_color_use_as_albedo = true
+backlight_enabled = true
+backlight = Color(0.5, 0.5, 0.5, 1)
+distance_fade_mode = 1
+distance_fade_min_distance = 128.0
+distance_fade_max_distance = 96.0
+
+[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_i7141"]
+generated_type = 1
+height_offset = 0.5
+material_override = SubResource("StandardMaterial3D_qfnet")
+last_lod = 0
+last_shadow_lod = 0
+lod0_range = 128.0
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_rga7q"]
+name = "Ground051"
+albedo_texture = ExtResource("3_gofwx")
+normal_texture = ExtResource("4_ymgfa")
+uv_scale = 0.05
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_6oujy"]
+name = "Ground029_1K-PNG_Color"
+id = 1
+albedo_texture = ExtResource("5_04x4y")
+normal_texture = ExtResource("6_suy7y")
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_hi6a0"]
+name = "Ground049A_1K-PNG_Color"
+id = 2
+albedo_texture = ExtResource("7_hvv48")
+normal_texture = ExtResource("8_rjwjh")
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_eo1xk"]
+name = "Ground049B_1K-PNG_Color"
+id = 3
+albedo_texture = ExtResource("9_x6yjt")
+normal_texture = ExtResource("10_fogts")
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_18clu"]
+name = "Ground050_1K-PNG_Color"
+id = 4
+albedo_texture = ExtResource("11_ie48y")
+normal_texture = ExtResource("12_28aks")
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_4wdv8"]
+name = "Grass008_1K-PNG_Color"
+id = 5
+albedo_color = Color(0.630818, 0.560561, 0.464168, 1)
+albedo_texture = ExtResource("13_qq2ar")
+normal_texture = ExtResource("14_gvfu3")
+uv_scale = 0.08
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_d46x8"]
+name = "Rock028_1K-PNG_Color"
+id = 6
+albedo_texture = ExtResource("15_h104r")
+normal_texture = ExtResource("16_jmi2s")
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_3l05q"]
+name = "Rock030_1K-PNG_Color"
+id = 7
+albedo_texture = ExtResource("17_gb7bq")
+normal_texture = ExtResource("18_cql2h")
+
+[sub_resource type="Terrain3DAssets" id="Terrain3DAssets_4mrxx"]
+mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_i7141")])
+texture_list = Array[Terrain3DTextureAsset]([SubResource("Terrain3DTextureAsset_rga7q"), SubResource("Terrain3DTextureAsset_6oujy"), SubResource("Terrain3DTextureAsset_hi6a0"), SubResource("Terrain3DTextureAsset_eo1xk"), SubResource("Terrain3DTextureAsset_18clu"), SubResource("Terrain3DTextureAsset_4wdv8"), SubResource("Terrain3DTextureAsset_d46x8"), SubResource("Terrain3DTextureAsset_3l05q")])
+
+[node name="World" type="Node3D"]
+
+[node name="water" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_rwgxs")
+surface_material_override/0 = SubResource("ShaderMaterial_k0juu")
+
+[node name="player2" type="Node3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 222.739, 7.38708, 119.829)
+metadata/_edit_vertical_guides_ = [576.0]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="player2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+mesh = SubResource("BoxMesh_4kbfs")
+skeleton = NodePath("../../player2")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="player2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.4003, 0)
+mesh = SubResource("BoxMesh_f17e3")
+skeleton = NodePath("../../player2")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="player2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.4003, 76.3508)
+mesh = SubResource("BoxMesh_x2olw")
+skeleton = NodePath("../../player2")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="player2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.4003, -70.6084)
+mesh = SubResource("BoxMesh_817gm")
+skeleton = NodePath("../../player2")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="player2"]
+transform = Transform3D(1, 0, 0, 0, 0.790176, -0.612879, 0, 0.612879, 0.790176, 0, 17.5979, -71.6043)
+mesh = SubResource("BoxMesh_ggc52")
+skeleton = NodePath("../../player2")
+surface_material_override/0 = SubResource("StandardMaterial3D_l8ah6")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="player2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15.7693, 7.91709)
+mesh = SubResource("BoxMesh_e75v4")
+skeleton = NodePath("../../player2")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="player2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8147e-06, 37.2532, 3.1108)
+mesh = SubResource("BoxMesh_8u370")
+skeleton = NodePath("../../player2")
+
+[node name="player" parent="." instance=ExtResource("2_o5hl4")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.863597, -0.0851732, -0.496936, 0.500908, 0.032798, 0.864879, -0.057366, -0.995826, 0.0709882, 0, 2.78665, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 500.0
+
+[node name="SpawnPoints" type="Node3D" parent="."]
+
+[node name="0" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.0825, 0, 495.848)
+
+[node name="1" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 304.91, 0, 425.437)
+
+[node name="2" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 501.294, 0, 155.698)
+
+[node name="3" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 594.63, 0, -228.289)
+
+[node name="4" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 454.207, 0, -479.648)
+
+[node name="5" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 86.0767, 0, -752.09)
+
+[node name="6" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -304.665, 6.10352e-05, -730.092)
+
+[node name="7" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -670.907, 6.10352e-05, -468.625)
+
+[node name="8" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -795.234, 6.10352e-05, -40.2661)
+
+[node name="9" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -801.225, 6.10352e-05, 320.753)
+
+[node name="10" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -538.035, 6.10352e-05, 589.382)
+
+[node name="11" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -248.793, 6.10352e-05, 713.808)
+
+[node name="12" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -248.793, 6.10352e-05, 713.808)
+
+[node name="Players" type="Node3D" parent="."]
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://dl8sae6e1wjis")
+spawn_path = NodePath("../Players")
+
+[node name="Terrain3D" type="Terrain3D" parent="."]
+data_directory = "res://terrain"
+material = SubResource("Terrain3DMaterial_71j4m")
+assets = SubResource("Terrain3DAssets_4mrxx")
+show_grid = true
+show_region_grid = true
+top_level = true
+metadata/_edit_lock_ = true

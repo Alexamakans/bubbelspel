@@ -32,10 +32,17 @@
 *.tga filter=lfs diff=lfs merge=lfs -text
 *.pdf filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
-*.dll filter=lfs diff=lfs merge=lfs -text
 *.unitypackage filter=lfs diff=lfs merge=lfs -text
 *.aif filter=lfs diff=lfs merge=lfs -text
 *.ttf filter=lfs diff=lfs merge=lfs -text
 *.rns filter=lfs diff=lfs merge=lfs -text
 *.reason filter=lfs diff=lfs merge=lfs -text
 *.lxo filter=lfs diff=lfs merge=lfs -text
+
+# Bins/executables
+*.wasm filter=lfs diff=lfs merge=lfs -text
+*.so filter=lfs diff=lfs merge=lfs -text
+*.dll filter=lfs diff=lfs merge=lfs -text
+*.dylib filter=lfs diff=lfs merge=lfs -text
+*.o filter=lfs diff=lfs merge=lfs -text
+bin/**/*.debug filter=lfs diff=lfs merge=lfs -text

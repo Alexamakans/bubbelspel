@@ -126,6 +126,7 @@ offset_bottom = 40.0
 script = ExtResource("2_vjb58")
 
 [node name="MainMenu" type="PanelContainer" parent="Menu"]
+layout_mode = 0
 offset_left = 515.0
 offset_top = 173.0
 offset_right = 765.0
@@ -152,6 +153,7 @@ text = " Join game "
 
 [node name="HostGame" type="PanelContainer" parent="Menu"]
 visible = false
+layout_mode = 0
 offset_left = 515.0
 offset_top = 173.0
 offset_right = 765.0
@@ -215,6 +217,7 @@ theme_override_colors/font_color = Color(1, 0, 0, 1)
 
 [node name="JoinGame" type="PanelContainer" parent="Menu"]
 visible = false
+layout_mode = 0
 offset_left = 515.0
 offset_top = 173.0
 offset_right = 765.0
@@ -224,6 +227,7 @@ offset_bottom = 446.0
 layout_mode = 2
 
 [node name="Back" type="Button" parent="Menu/JoinGame/Control"]
+layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 53.0
@@ -289,6 +293,7 @@ theme_override_colors/font_color = Color(1, 0, 0, 1)
 
 [node name="Lobby" type="PanelContainer" parent="Menu"]
 visible = false
+layout_mode = 0
 offset_left = 515.0
 offset_top = 173.0
 offset_right = 765.0
@@ -298,6 +303,7 @@ offset_bottom = 446.0
 layout_mode = 2
 
 [node name="Leave" type="Button" parent="Menu/Lobby/Control"]
+layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 53.0

@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 gamestate="*res://gamestate.gd"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/terrain_3d/plugin.cfg")
+
 [input]
 
 move_forward={

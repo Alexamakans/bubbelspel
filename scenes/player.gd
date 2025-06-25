@@ -55,9 +55,9 @@ func movement() -> void:
 	if speed_current > 0:
 		speed_factor = speed_current / speed_forward_max
 	else:
-		speed_factor = abs(speed_current / speed_reverse_max)
+		speed_factor = speed_current / speed_reverse_max
 	
-	var rot_influenced = rot_current * rot_scale_curve.sample(speed_factor)
+	var rot_influenced = rot_current * signf(speed_factor) * rot_scale_curve.sample(abs(speed_factor))
 	angular_velocity.y = deg_to_rad(rot_influenced)
 
 func stay_upright(delta: float) -> void:

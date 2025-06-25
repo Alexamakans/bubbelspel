@@ -1,9 +1,8 @@
-[gd_scene load_steps=46 format=3 uid="uid://ck4sm14vsee4w"]
+[gd_scene load_steps=47 format=3 uid="uid://ck4sm14vsee4w"]
 
 [ext_resource type="Shader" uid="uid://c3kjd10ln4c6b" path="res://scenes/world.gdshader" id="1_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://dl8sae6e1wjis" path="res://scenes/player.tscn" id="1_nnsk1"]
 [ext_resource type="Script" uid="uid://bsa6dt5qtyclu" path="res://scenes/water.gd" id="2_4wyf3"]
-[ext_resource type="Texture2D" uid="uid://c10hrir6psxqp" path="res://textures/noiseTexture.png" id="3_qfnet"]
 [ext_resource type="Script" uid="uid://ctxyiw2s17xid" path="res://scenes/player_camera.gd" id="4_k0juu"]
 [ext_resource type="Script" uid="uid://d3cf3u1ll5xlv" path="res://globals.gd" id="5_71j4m"]
 [ext_resource type="PackedScene" uid="uid://bgwibwn48yseh" path="res://scenes/binoculars.tscn" id="6_kpybi"]
@@ -29,6 +28,21 @@ size = Vector2(1200, 1200)
 subdivide_width = 120
 subdivide_depth = 120
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_oo54l"]
+noise_type = 2
+seed = 12
+fractal_type = 2
+fractal_octaves = 8
+fractal_gain = 0.95
+fractal_weighted_strength = 0.8
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kpybi"]
+width = 4096
+height = 4096
+seamless = true
+seamless_blend_skirt = 0.536
+noise = SubResource("FastNoiseLite_oo54l")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k0juu"]
 render_priority = 0
 shader = ExtResource("1_4wyf3")
@@ -40,7 +54,7 @@ shader_parameter/wave_b = Vector3(0.2, 0.2, 30)
 shader_parameter/wave_b_dir = Vector2(0.3, 1)
 shader_parameter/wave_c = Vector3(0.05, 0.2, 8)
 shader_parameter/wave_c_dir = Vector2(2, 0.5)
-shader_parameter/noise = ExtResource("3_qfnet")
+shader_parameter/noise = SubResource("NoiseTexture2D_kpybi")
 shader_parameter/foam_level = 0.4
 shader_parameter/time = 0.0
 

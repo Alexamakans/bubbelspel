@@ -10,6 +10,7 @@ var speed_current: float = 0
 @export_group("Rotation (deg-p-s)")
 @export var rot_angular_velocity_max: float = rad_to_deg(PI/16.0)
 @export var rot_acceleration: float = rad_to_deg(PI/32.0)
+@export var rot_scale_curve: Curve
 var rot_current: float = 0.0
 
 @export_group("UI")
@@ -54,9 +55,9 @@ func movement() -> void:
 	if speed_current > 0:
 		speed_factor = speed_current / speed_forward_max
 	else:
-		speed_factor = speed_current / speed_reverse_max
-
-	var rot_influenced = lerpf(0, rot_current, speed_factor)
+		speed_factor = abs(speed_current / speed_reverse_max)
+	
+	var rot_influenced = rot_current * rot_scale_curve.sample(speed_factor)
 	angular_velocity.y = deg_to_rad(rot_influenced)
 
 func stay_upright(delta: float) -> void:

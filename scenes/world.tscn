@@ -1,12 +1,12 @@
-[gd_scene load_steps=47 format=3 uid="uid://ck4sm14vsee4w"]
+[gd_scene load_steps=46 format=3 uid="uid://ck4sm14vsee4w"]
 
 [ext_resource type="Shader" uid="uid://c3kjd10ln4c6b" path="res://scenes/world.gdshader" id="1_4wyf3"]
 [ext_resource type="PackedScene" uid="uid://dl8sae6e1wjis" path="res://scenes/player.tscn" id="1_nnsk1"]
-[ext_resource type="Script" path="res://scenes/water.gd" id="2_4wyf3"]
+[ext_resource type="Script" uid="uid://bsa6dt5qtyclu" path="res://scenes/water.gd" id="2_4wyf3"]
 [ext_resource type="Texture2D" uid="uid://c10hrir6psxqp" path="res://textures/noiseTexture.png" id="3_qfnet"]
 [ext_resource type="Script" uid="uid://ctxyiw2s17xid" path="res://scenes/player_camera.gd" id="4_k0juu"]
-[ext_resource type="Shader" uid="uid://xa6p6dtrc6i1" path="res://binocular.gdshader" id="7_ctatt"]
-[ext_resource type="Script" path="res://globals.gd" id="5_71j4m"]
+[ext_resource type="Script" uid="uid://d3cf3u1ll5xlv" path="res://globals.gd" id="5_71j4m"]
+[ext_resource type="PackedScene" uid="uid://bgwibwn48yseh" path="res://scenes/binoculars.tscn" id="6_kpybi"]
 [ext_resource type="Texture2D" uid="uid://bgscm75n1177o" path="res://textures/Ground051_1K-PNG_Color.png" id="7_oo54l"]
 [ext_resource type="Texture2D" uid="uid://hjcpldyjvijb" path="res://textures/Ground051_1K-PNG_NormalGL.png" id="8_kpybi"]
 [ext_resource type="Texture2D" uid="uid://b3jnppdn0pdhn" path="res://textures/Ground029_1K-PNG_Color.png" id="9_ctatt"]
@@ -23,7 +23,6 @@
 [ext_resource type="Texture2D" uid="uid://bh20avm8dbxre" path="res://textures/Rock028_1K-PNG_NormalGL.png" id="20_f17e3"]
 [ext_resource type="Texture2D" uid="uid://fo3853vkwrti" path="res://textures/Rock030_1K-PNG_Color.png" id="21_x2olw"]
 [ext_resource type="Texture2D" uid="uid://c18ip76millu8" path="res://textures/Rock030_1K-PNG_NormalGL.png" id="22_817gm"]
-[ext_resource type="Script" uid="uid://bxwmf6lxvykjn" path="res://scenes/binoculars.gd" id="23_kpybi"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_rwgxs"]
 size = Vector2(1200, 1200)
@@ -45,6 +44,10 @@ shader_parameter/noise = ExtResource("3_qfnet")
 shader_parameter/foam_level = 0.4
 shader_parameter/time = 0.0
 
+[sub_resource type="Curve" id="Curve_kpybi"]
+_data = [Vector2(0, 0.164474), 0.0, 2.28351, 0, 0, Vector2(0.496084, 0.782895), -0.0193825, 0.0, 0, 0, Vector2(0.715405, 1), 1.82464, 0.0, 0, 0]
+point_count = 3
+
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_71j4m"]
 
 [sub_resource type="Sky" id="Sky_4wyf3"]
@@ -53,9 +56,6 @@ sky_material = SubResource("ProceduralSkyMaterial_71j4m")
 [sub_resource type="Environment" id="Environment_qfnet"]
 background_mode = 2
 sky = SubResource("Sky_4wyf3")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xgqkh"]
-shader = ExtResource("7_ctatt")
 
 [sub_resource type="Curve" id="Curve_i7141"]
 _data = [Vector2(0, 0), 0.0, 0.487478, 0, 0, Vector2(0.501799, 0.885445), 1.19983, 1.19983, 0, 0, Vector2(1, 1), -0.436029, 0.0, 0, 0]
@@ -241,22 +241,10 @@ script = ExtResource("2_4wyf3")
 [node name="player" parent="." instance=ExtResource("1_nnsk1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
 inertia = Vector3(50, 50, 100)
+rot_scale_curve = SubResource("Curve_kpybi")
 
-[node name="Binoculars" type="Node3D" parent="player"]
+[node name="Binoculars" parent="player" instance=ExtResource("6_kpybi")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.27501, 0.314942)
-script = ExtResource("23_kpybi")
-
-[node name="Camera" type="Camera3D" parent="player/Binoculars"]
-environment = SubResource("Environment_qfnet")
-fov = 37.8493
-
-[node name="Vignette" type="ColorRect" parent="player/Binoculars/Camera"]
-material = SubResource("ShaderMaterial_xgqkh")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.863597, -0.0851732, -0.496936, 0.500908, 0.032798, 0.864879, -0.057366, -0.995826, 0.0709882, 0, 2.78665, 0)

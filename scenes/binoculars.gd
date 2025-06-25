@@ -12,20 +12,24 @@ class_name Binoculars
 @export var lerp_error_threshold_percentage := 0.00001
 
 @export_group("Vignette")
-@export var target_radius := 0.35
+@export var target_radius := 0.6
 
 var old_camera: Camera3D
 var old_mouse_mode: Input.MouseMode
 var transitioning := false
 
 @onready var original_local_position := position
+@onready var compass: TextureRect = $Camera/GUI/CenterContainer/Compass
 @onready var camera: Camera3D = $Camera
-@onready var vignette: ColorRect = $Camera/Vignette
+@onready var vignette: ColorRect = $Camera/GUI/Vignette
 var invisible_vignette_radius := 2.0
 var current_vignette_radius := 2.0
 
 var mouse_delta := Vector2(0, 0)
 var current_pitch_degrees := 0.0
+
+func _ready() -> void:
+	compass.hide()
 
 func _process(delta: float) -> void:
 	var lerp_speed := -log(lerp_error_threshold_percentage) / lerp_time_seconds
@@ -44,6 +48,7 @@ func _process(delta: float) -> void:
 		transitioning = cur_pos.distance_to(target_pos) > 0.5
 
 		if cur_pos.distance_to(target_pos) < 20.0:
+			compass.show()
 			_update_mouselook()
 
 		if transitioning:
@@ -66,6 +71,7 @@ func _process(delta: float) -> void:
 			current_vignette_radius = lerpf(current_vignette_radius, target_radius, 1.0 - exp(-lerp_speed * delta));
 			vignette.set_instance_shader_parameter("radius", current_vignette_radius)
 		else:
+			compass.show()
 			camera.global_position = target_pos
 			# fov
 			camera.fov = lerpf(
@@ -78,6 +84,7 @@ func _process(delta: float) -> void:
 			_update_mouselook()
 			old_camera.global_rotation = camera.global_rotation
 	elif camera.current:
+		compass.hide()
 		# Transition back to old camera
 		var cur_pos := camera.global_position
 		var target_pos: Vector3 = old_camera.global_position

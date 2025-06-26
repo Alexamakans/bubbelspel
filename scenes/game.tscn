@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://di1g4xerhnl1c"]
+
+[ext_resource type="Script" uid="uid://btw3n6hl017q" path="res://scenes/game.gd" id="1_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://bru0ro37h0rbt" path="res://scenes/menu.tscn" id="2_lnu2h"]
+
+[node name="Game" type="Node" node_paths=PackedStringArray("world_home")]
+script = ExtResource("1_yqjtg")
+world_home = NodePath("WorldHome")
+
+[node name="Menu" parent="." instance=ExtResource("2_lnu2h")]
+
+[node name="WorldHome" type="Node" parent="."]
+
+[node name="WorldSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://ck4sm14vsee4w")
+spawn_path = NodePath("../WorldHome")
+spawn_limit = 1

@@ -15,10 +15,6 @@ run/main_scene="uid://di1g4xerhnl1c"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
-[autoload]
-
-gamestate="*res://gamestate.gd"
-
 [display]
 
 window/size/viewport_width=2500

@@ -125,7 +125,8 @@ func _input(event):
 				# TODO: disable cannon moving thing that doesn't exist yet
 				pass
 
-func _update_mouselook(delta: float) -> void:
+
+func _update_mouselook(_delta: float) -> void:
 	var yaw_delta_deg := mouse_delta.x * yaw_sensitivity * 0.1
 	var pitch_delta_deg := -mouse_delta.y * pitch_sensitivity * 0.1
 	mouse_delta.x = 0

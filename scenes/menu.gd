@@ -9,6 +9,8 @@ const VIEW_LOBBY = "Lobby"
 
 var current_view: String = VIEW_MAIN_MENU
 
+@onready var gamestate: Game = Game.instance
+
 @onready var main_menu_control: Control = $MainMenu
 
 @onready var error_dialog: AcceptDialog = $ErrorDialog
@@ -33,8 +35,10 @@ var current_view: String = VIEW_MAIN_MENU
 @onready var lobby_start_button: Button = $Lobby/VBox/Start
 @onready var lobby_waiting_label: Label = $Lobby/VBox/WaitingLabel
 
+
 func set_view(view: String) -> void:
-	get_parent().visible = view != VIEW_NONE
+	visible = view != VIEW_NONE
+	$"../World".visible = view != VIEW_NONE
 	main_menu_control.visible = view == VIEW_MAIN_MENU
 	host_game_control.visible = view == VIEW_HOST_GAME
 	if view == VIEW_HOST_GAME:
@@ -45,6 +49,7 @@ func set_view(view: String) -> void:
 		set_join_game_error("")
 		set_join_game_interactible(true)
 	lobby_control.visible = view == VIEW_LOBBY
+
 
 func _ready():
 	# Called every time the node is added to the scene.
@@ -82,6 +87,7 @@ func _on_host_pressed():
 
 	gamestate.host_game(player_name, port.to_int())
 	refresh_lobby()
+
 
 func set_host_game_interactible(interactible: bool) -> void:
 	host_game_back.disabled = not interactible
@@ -165,4 +171,4 @@ func _on_lobby_leave_pressed() -> void:
 
 
 func _on_start_pressed():
-	gamestate.begin_game()
+	gamestate.start_game()

@@ -27,18 +27,18 @@ var rot_current: float = 0.0
 		# Can't use "input" var because it may not be set yet
 		$PlayerInput.set_multiplayer_authority(id)
 
+@export var disable_when_not_server: Array[Node]
+
 @onready var input: PlayerInput = $PlayerInput
 @onready var pid_x: PIDController = $PIDController_X
 @onready var pid_z: PIDController = $PIDController_Z
 
-signal ready_as_this_player()
-signal ready_as_other_player()
-
 func _ready() -> void:
-	if input.is_multiplayer_authority():
-		ready_as_this_player.emit()
-	else:
-		ready_as_other_player.emit()
+	if disable_when_not_server != null and player_id != multiplayer.get_unique_id():
+		for node in disable_when_not_server:
+			node.set_process(false)
+			if node is Node3D:
+				node.visible = false
 
 func _process(delta: float) -> void:
 	var input_forward: float = input.input_forward * delta * speed_acceleration

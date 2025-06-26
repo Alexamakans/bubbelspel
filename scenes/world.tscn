@@ -1,8 +1,8 @@
 [gd_scene load_steps=39 format=3 uid="uid://ck4sm14vsee4w"]
 
 [ext_resource type="Shader" uid="uid://c3kjd10ln4c6b" path="res://scenes/world.gdshader" id="1_4wyf3"]
+[ext_resource type="Script" uid="uid://d3cf3u1ll5xlv" path="res://scenes/world.gd" id="1_pm21f"]
 [ext_resource type="Script" uid="uid://bsa6dt5qtyclu" path="res://scenes/water.gd" id="2_4wyf3"]
-[ext_resource type="Script" uid="uid://d3cf3u1ll5xlv" path="res://globals.gd" id="5_71j4m"]
 [ext_resource type="Texture2D" uid="uid://bgscm75n1177o" path="res://textures/Ground051_1K-PNG_Color.png" id="7_oo54l"]
 [ext_resource type="Texture2D" uid="uid://hjcpldyjvijb" path="res://textures/Ground051_1K-PNG_NormalGL.png" id="8_kpybi"]
 [ext_resource type="Texture2D" uid="uid://b3jnppdn0pdhn" path="res://textures/Ground029_1K-PNG_Color.png" id="9_ctatt"]
@@ -33,7 +33,7 @@ fractal_octaves = 8
 fractal_gain = 0.95
 fractal_weighted_strength = 0.8
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kpybi"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pm21f"]
 width = 1024
 height = 1024
 seamless = true
@@ -50,7 +50,7 @@ shader_parameter/wave_b = Vector3(0.2, 0.2, 30)
 shader_parameter/wave_b_dir = Vector2(0.3, 1)
 shader_parameter/wave_c = Vector3(0.05, 0.2, 8)
 shader_parameter/wave_c_dir = Vector2(2, 0.5)
-shader_parameter/noise = SubResource("NoiseTexture2D_kpybi")
+shader_parameter/noise = SubResource("NoiseTexture2D_pm21f")
 shader_parameter/foam_level = 0.4
 shader_parameter/time = 0.0
 
@@ -172,11 +172,9 @@ normal_texture = ExtResource("22_817gm")
 mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_i7141")])
 texture_list = Array[Terrain3DTextureAsset]([SubResource("Terrain3DTextureAsset_rga7q"), SubResource("Terrain3DTextureAsset_6oujy"), SubResource("Terrain3DTextureAsset_hi6a0"), SubResource("Terrain3DTextureAsset_eo1xk"), SubResource("Terrain3DTextureAsset_18clu"), SubResource("Terrain3DTextureAsset_4wdv8"), SubResource("Terrain3DTextureAsset_d46x8"), SubResource("Terrain3DTextureAsset_3l05q")])
 
-[node name="World" type="Node3D"]
-
-[node name="Globals" type="Node" parent="." node_paths=PackedStringArray("water")]
-script = ExtResource("5_71j4m")
-water = NodePath("../water")
+[node name="World" type="Node3D" node_paths=PackedStringArray("water")]
+script = ExtResource("1_pm21f")
+water = NodePath("water")
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://dl8sae6e1wjis")
@@ -187,10 +185,10 @@ spawn_path = NodePath("../Players")
 [node name="SpawnPoints" type="Node3D" parent="."]
 
 [node name="0" type="Marker3D" parent="SpawnPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -286.632, 0, 78.1044)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -158.742, -3.05176e-05, 6.51552)
 
 [node name="1" type="Marker3D" parent="SpawnPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96.6074, 0, 423.16)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -43.0146, 0, 64.5915)
 
 [node name="2" type="Marker3D" parent="SpawnPoints"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 489.911, 0, 21.3826)

@@ -1,50 +1,56 @@
-[gd_scene load_steps=16 format=3 uid="uid://di1g4xerhnl1c"]
+[gd_scene load_steps=19 format=3 uid="uid://bru0ro37h0rbt"]
 
 [ext_resource type="Shader" uid="uid://c3kjd10ln4c6b" path="res://scenes/world.gdshader" id="1_vjb58"]
-[ext_resource type="Script" uid="uid://devemhu1swx16" path="res://lobby.gd" id="2_vjb58"]
+[ext_resource type="Script" uid="uid://bsa6dt5qtyclu" path="res://scenes/water.gd" id="2_g3eks"]
+[ext_resource type="Script" uid="uid://devemhu1swx16" path="res://scenes/menu.gd" id="2_vjb58"]
+[ext_resource type="Script" uid="uid://d3cf3u1ll5xlv" path="res://scenes/world.gd" id="3_13sgg"]
+[ext_resource type="Script" path="res://scenes/pidcontroller.gd" id="3_v86rl"]
+[ext_resource type="Script" uid="uid://bmd6kgqdisbye" path="res://scenes/floater.gd" id="4_13sgg"]
+[ext_resource type="PackedScene" uid="uid://5wx77pssi7ja" path="res://scenes/cruiser01.tscn" id="5_i6lef"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_mhnvy"]
-size = Vector2(2000, 2000)
-subdivide_width = 512
-subdivide_depth = 512
+[sub_resource type="PlaneMesh" id="PlaneMesh_70i5f"]
+size = Vector2(1200, 1200)
+subdivide_width = 120
+subdivide_depth = 120
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ytvr"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_mj5lg"]
+noise_type = 2
+seed = 12
+fractal_type = 2
+fractal_octaves = 8
+fractal_gain = 0.95
+fractal_weighted_strength = 0.8
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kpybi"]
+width = 1024
+height = 1024
+seamless = true
+noise = SubResource("FastNoiseLite_mj5lg")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ufwb2"]
 render_priority = 0
 shader = ExtResource("1_vjb58")
-shader_parameter/water_color = Vector4(0, 0, 0, 0)
-shader_parameter/deep_water_color = Vector4(0, 0, 0, 0)
-shader_parameter/wave_a = Vector3(1, 0.005, 1200)
-shader_parameter/wave_a_dir = Vector2(1, 0)
-shader_parameter/wave_b = Vector3(1.4, 0.01, 600)
+shader_parameter/water_color = Vector4(0.05, 0.17, 0.3, 0.3)
+shader_parameter/deep_water_color = Vector4(0.03, 0.04, 0.13, 0.9)
+shader_parameter/wave_a = Vector3(0.6, 0.1, 50)
+shader_parameter/wave_a_dir = Vector2(0.215, 0.195)
+shader_parameter/wave_b = Vector3(0.2, 0.2, 30)
 shader_parameter/wave_b_dir = Vector2(0.3, 1)
-shader_parameter/wave_c = Vector3(1.6, 0.012, 400)
-shader_parameter/wave_c_dir = Vector2(1, 0.5)
+shader_parameter/wave_c = Vector3(0.05, 0.2, 8)
+shader_parameter/wave_c_dir = Vector2(2, 0.5)
+shader_parameter/noise = SubResource("NoiseTexture2D_kpybi")
 shader_parameter/foam_level = 0.4
 shader_parameter/time = 0.0
 
-[sub_resource type="BoxMesh" id="BoxMesh_3vyb7"]
-size = Vector3(28, 8, 240)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qhqgy"]
+albedo_color = Color(0.811183, 0.957611, 0, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_g2els"]
-size = Vector3(18, 5, 60)
+[sub_resource type="SphereMesh" id="SphereMesh_dqkch"]
+radius = 2.951
+height = 5.902
 
-[sub_resource type="BoxMesh" id="BoxMesh_qhqgy"]
-size = Vector3(18, 5, 60)
-
-[sub_resource type="BoxMesh" id="BoxMesh_dqkch"]
-size = Vector3(18, 5, 33.35)
-
-[sub_resource type="BoxMesh" id="BoxMesh_fjrip"]
-size = Vector3(6.015, 5, 33.35)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g2els"]
-albedo_color = Color(0.2, 0.2, 0.2, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_qlg0r"]
-size = Vector3(18, 20, 30)
-
-[sub_resource type="BoxMesh" id="BoxMesh_tuyoq"]
-size = Vector3(5, 50, 5)
+[sub_resource type="BoxShape3D" id="BoxShape3D_u8vuu"]
+size = Vector3(2.73413, 1.57422, 23.9258)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3vyb7"]
 
@@ -55,90 +61,193 @@ sky_material = SubResource("ProceduralSkyMaterial_3vyb7")
 background_mode = 2
 sky = SubResource("Sky_4wyf3")
 
-[node name="Menu" type="Node3D"]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_v86rl"]
 
-[node name="water" type="MeshInstance3D" parent="."]
-mesh = SubResource("PlaneMesh_mhnvy")
-surface_material_override/0 = SubResource("ShaderMaterial_4ytvr")
+[node name="Menu" type="Node"]
 
-[node name="player" type="Node3D" parent="."]
+[node name="World" type="Node3D" parent="." node_paths=PackedStringArray("water")]
+script = ExtResource("3_13sgg")
+water = NodePath("water")
+
+[node name="water" type="MeshInstance3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0199623, 0.15757, -0.00815582)
+mesh = SubResource("PlaneMesh_70i5f")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("ShaderMaterial_ufwb2")
+script = ExtResource("2_g3eks")
+
+[node name="Player" type="RigidBody3D" parent="World"]
+transform = Transform3D(-0.96177, 0, -0.273858, 0, 1, 0, 0.273858, 0, -0.96177, -0.851392, 0, -0.534391)
+gravity_scale = 0.0
+inertia = Vector3(50, 50, 50)
+angular_damp_mode = 1
+angular_damp = 20.0
 metadata/_edit_vertical_guides_ = [576.0]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
-mesh = SubResource("BoxMesh_3vyb7")
+[node name="PIDController_X" type="Node" parent="World/Player"]
+script = ExtResource("3_v86rl")
+proportional_gain = 3.0
+derivative_gain = 8.0
+output_min = -200.0
+output_max = 200.0
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.4003, 0)
-mesh = SubResource("BoxMesh_g2els")
+[node name="PIDController_Z" type="Node" parent="World/Player"]
+script = ExtResource("3_v86rl")
+proportional_gain = 3.0
+integral_gain = 2.0
+derivative_gain = 2.0
+output_min = -200.0
+output_max = 200.0
 
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.4003, 76.3508)
-mesh = SubResource("BoxMesh_qhqgy")
+[node name="Floaters" type="Node3D" parent="World/Player"]
 
-[node name="MeshInstance3D6" type="MeshInstance3D" parent="player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.4003, -70.6084)
-mesh = SubResource("BoxMesh_dqkch")
+[node name="Floater" type="Node3D" parent="World/Player/Floaters"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, -12.6141)
+script = ExtResource("4_13sgg")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
 
-[node name="MeshInstance3D7" type="MeshInstance3D" parent="player"]
-transform = Transform3D(1, 0, 0, 0, 0.790176, -0.612879, 0, 0.612879, 0.790176, 0, 17.5979, -71.6043)
-mesh = SubResource("BoxMesh_fjrip")
-surface_material_override/0 = SubResource("StandardMaterial3D_g2els")
+[node name="Marker" type="MeshInstance3D" parent="World/Player/Floaters/Floater"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
 
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15.7693, 7.91709)
-mesh = SubResource("BoxMesh_qlg0r")
+[node name="Floater2" type="Node3D" parent="World/Player/Floaters"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 2.5, 0, 0)
+script = ExtResource("4_13sgg")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8147e-06, 37.2532, 3.1108)
-mesh = SubResource("BoxMesh_tuyoq")
+[node name="Marker" type="MeshInstance3D" parent="World/Player/Floaters/Floater2"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
+skeleton = NodePath("../../Floater")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.520011, -0.393868, -0.757929, -0.206453, -0.803072, 0.558974, -0.828834, 0.44715, 0.336291, 0, 2.78665, 0)
+[node name="Floater3" type="Node3D" parent="World/Player/Floaters"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -2.5, 0, 0)
+script = ExtResource("4_13sgg")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
+
+[node name="Marker" type="MeshInstance3D" parent="World/Player/Floaters/Floater3"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
+
+[node name="Floater5" type="Node3D" parent="World/Player/Floaters"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 2, 0, -8)
+script = ExtResource("4_13sgg")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
+
+[node name="Marker" type="MeshInstance3D" parent="World/Player/Floaters/Floater5"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
+skeleton = NodePath("../../Floater")
+
+[node name="Floater6" type="Node3D" parent="World/Player/Floaters"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -2, 0, -8)
+script = ExtResource("4_13sgg")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
+
+[node name="Marker" type="MeshInstance3D" parent="World/Player/Floaters/Floater6"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
+
+[node name="Floater7" type="Node3D" parent="World/Player/Floaters"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 2, 0, 8)
+script = ExtResource("4_13sgg")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
+
+[node name="Marker" type="MeshInstance3D" parent="World/Player/Floaters/Floater7"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
+skeleton = NodePath("../../Floater")
+
+[node name="Floater8" type="Node3D" parent="World/Player/Floaters"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -2, 0, 8)
+script = ExtResource("4_13sgg")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
+
+[node name="Marker" type="MeshInstance3D" parent="World/Player/Floaters/Floater8"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
+
+[node name="Floater4" type="Node3D" parent="World/Player/Floaters"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 13.1902)
+script = ExtResource("4_13sgg")
+water_drag = 0.98
+water_angular_drag = 0.2
+force_multiplier = 1.8
+
+[node name="Marker" type="MeshInstance3D" parent="World/Player/Floaters/Floater4"]
+material_override = SubResource("StandardMaterial3D_qhqgy")
+mesh = SubResource("SphereMesh_dqkch")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.282017, 0)
+shape = SubResource("BoxShape3D_u8vuu")
+
+[node name="cruiser02" parent="World/Player" instance=ExtResource("5_i6lef")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0.864423)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="World"]
+transform = Transform3D(-0.520011, -0.393868, -0.757929, -0.206453, -0.803072, 0.558974, -0.828834, 0.447149, 0.336291, 0, 2.78665, 0)
 shadow_enabled = true
 directional_shadow_max_distance = 500.0
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.116359, 0.117359, 0.986249, 0, 0.992994, -0.118161, -0.993207, -0.0137491, -0.115544, 103.432, 38.8205, -90.2524)
+[node name="Camera3D" type="Camera3D" parent="World"]
+transform = Transform3D(-0.116359, 0.117359, 0.986249, 0, 0.992994, -0.118162, -0.993207, -0.0137492, -0.115544, 13.9596, 6.88571, -14.0626)
 top_level = true
 environment = SubResource("Environment_g2els")
 current = true
 fov = 80.0
 
-[node name="Menu" type="Control" parent="."]
+[node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("2_vjb58")
 
-[node name="MainMenu" type="PanelContainer" parent="Menu"]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="UI"]
+replication_config = SubResource("SceneReplicationConfig_v86rl")
+
+[node name="MainMenu" type="PanelContainer" parent="UI"]
 layout_mode = 0
 offset_left = 515.0
 offset_top = 173.0
 offset_right = 765.0
 offset_bottom = 304.0
 
-[node name="VBox" type="VBoxContainer" parent="Menu/MainMenu"]
+[node name="VBox" type="VBoxContainer" parent="UI/MainMenu"]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="Title" type="Label" parent="Menu/MainMenu/VBox"]
+[node name="Title" type="Label" parent="UI/MainMenu/VBox"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "bubbelspel"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HostGame" type="Button" parent="Menu/MainMenu/VBox"]
+[node name="HostGame" type="Button" parent="UI/MainMenu/VBox"]
 layout_mode = 2
 text = " Host game "
 
-[node name="JoinGame" type="Button" parent="Menu/MainMenu/VBox"]
+[node name="JoinGame" type="Button" parent="UI/MainMenu/VBox"]
 layout_mode = 2
 text = " Join game "
 
-[node name="HostGame" type="PanelContainer" parent="Menu"]
+[node name="HostGame" type="PanelContainer" parent="UI"]
 visible = false
 layout_mode = 0
 offset_left = 515.0
@@ -146,10 +255,10 @@ offset_top = 173.0
 offset_right = 765.0
 offset_bottom = 446.0
 
-[node name="Control" type="Control" parent="Menu/HostGame"]
+[node name="Control" type="Control" parent="UI/HostGame"]
 layout_mode = 2
 
-[node name="Back" type="Button" parent="Menu/HostGame/Control"]
+[node name="Back" type="Button" parent="UI/HostGame/Control"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
@@ -157,52 +266,52 @@ offset_right = 53.0
 offset_bottom = 39.0
 text = "Back"
 
-[node name="VBox" type="VBoxContainer" parent="Menu/HostGame"]
+[node name="VBox" type="VBoxContainer" parent="UI/HostGame"]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="Title" type="Label" parent="Menu/HostGame/VBox"]
+[node name="Title" type="Label" parent="UI/HostGame/VBox"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "Host game"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerNameLabel" type="Label" parent="Menu/HostGame/VBox"]
+[node name="PlayerNameLabel" type="Label" parent="UI/HostGame/VBox"]
 layout_mode = 2
 text = "Player name:"
 
-[node name="PlayerName" type="TextEdit" parent="Menu/HostGame/VBox"]
+[node name="PlayerName" type="TextEdit" parent="UI/HostGame/VBox"]
 custom_minimum_size = Vector2(150, 36)
 layout_mode = 2
 placeholder_text = "Enter here"
 emoji_menu_enabled = false
 
-[node name="PortLabel" type="Label" parent="Menu/HostGame/VBox"]
+[node name="PortLabel" type="Label" parent="UI/HostGame/VBox"]
 layout_mode = 2
 text = "Port:"
 
-[node name="Port" type="TextEdit" parent="Menu/HostGame/VBox"]
+[node name="Port" type="TextEdit" parent="UI/HostGame/VBox"]
 custom_minimum_size = Vector2(150, 36)
 layout_mode = 2
 text = "9752"
 placeholder_text = "Enter here"
 emoji_menu_enabled = false
 
-[node name="Separator" type="Control" parent="Menu/HostGame/VBox"]
+[node name="Separator" type="Control" parent="UI/HostGame/VBox"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="Host" type="Button" parent="Menu/HostGame/VBox"]
+[node name="Host" type="Button" parent="UI/HostGame/VBox"]
 layout_mode = 2
 disabled = true
 text = "Host"
 
-[node name="ErrorLabel" type="Label" parent="Menu/HostGame/VBox"]
+[node name="ErrorLabel" type="Label" parent="UI/HostGame/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 
-[node name="JoinGame" type="PanelContainer" parent="Menu"]
+[node name="JoinGame" type="PanelContainer" parent="UI"]
 visible = false
 layout_mode = 0
 offset_left = 515.0
@@ -210,10 +319,10 @@ offset_top = 173.0
 offset_right = 765.0
 offset_bottom = 446.0
 
-[node name="Control" type="Control" parent="Menu/JoinGame"]
+[node name="Control" type="Control" parent="UI/JoinGame"]
 layout_mode = 2
 
-[node name="Back" type="Button" parent="Menu/JoinGame/Control"]
+[node name="Back" type="Button" parent="UI/JoinGame/Control"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
@@ -221,35 +330,35 @@ offset_right = 53.0
 offset_bottom = 39.0
 text = "Back"
 
-[node name="VBox" type="VBoxContainer" parent="Menu/JoinGame"]
+[node name="VBox" type="VBoxContainer" parent="UI/JoinGame"]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="Title" type="Label" parent="Menu/JoinGame/VBox"]
+[node name="Title" type="Label" parent="UI/JoinGame/VBox"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "Join game"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerNameLabel" type="Label" parent="Menu/JoinGame/VBox"]
+[node name="PlayerNameLabel" type="Label" parent="UI/JoinGame/VBox"]
 layout_mode = 2
 text = "Player name:"
 
-[node name="PlayerName" type="TextEdit" parent="Menu/JoinGame/VBox"]
+[node name="PlayerName" type="TextEdit" parent="UI/JoinGame/VBox"]
 custom_minimum_size = Vector2(150, 36)
 layout_mode = 2
 placeholder_text = "Enter here"
 emoji_menu_enabled = false
 
-[node name="AddressLabel" type="Label" parent="Menu/JoinGame/VBox"]
+[node name="AddressLabel" type="Label" parent="UI/JoinGame/VBox"]
 layout_mode = 2
 text = "Address:"
 
-[node name="Address" type="HBoxContainer" parent="Menu/JoinGame/VBox"]
+[node name="Address" type="HBoxContainer" parent="UI/JoinGame/VBox"]
 layout_mode = 2
 
-[node name="IP" type="TextEdit" parent="Menu/JoinGame/VBox/Address"]
+[node name="IP" type="TextEdit" parent="UI/JoinGame/VBox/Address"]
 custom_minimum_size = Vector2(100, 36)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -257,7 +366,7 @@ text = "127.0.0.1"
 placeholder_text = "e.g 127.0.0.1"
 emoji_menu_enabled = false
 
-[node name="Port" type="TextEdit" parent="Menu/JoinGame/VBox/Address"]
+[node name="Port" type="TextEdit" parent="UI/JoinGame/VBox/Address"]
 custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -265,20 +374,20 @@ text = "9752"
 placeholder_text = "e.g 9752"
 emoji_menu_enabled = false
 
-[node name="Separator" type="Control" parent="Menu/JoinGame/VBox"]
+[node name="Separator" type="Control" parent="UI/JoinGame/VBox"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="Join" type="Button" parent="Menu/JoinGame/VBox"]
+[node name="Join" type="Button" parent="UI/JoinGame/VBox"]
 layout_mode = 2
 disabled = true
 text = "Join"
 
-[node name="ErrorLabel" type="Label" parent="Menu/JoinGame/VBox"]
+[node name="ErrorLabel" type="Label" parent="UI/JoinGame/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 
-[node name="Lobby" type="PanelContainer" parent="Menu"]
+[node name="Lobby" type="PanelContainer" parent="UI"]
 visible = false
 layout_mode = 0
 offset_left = 515.0
@@ -286,10 +395,10 @@ offset_top = 173.0
 offset_right = 765.0
 offset_bottom = 446.0
 
-[node name="Control" type="Control" parent="Menu/Lobby"]
+[node name="Control" type="Control" parent="UI/Lobby"]
 layout_mode = 2
 
-[node name="Leave" type="Button" parent="Menu/Lobby/Control"]
+[node name="Leave" type="Button" parent="UI/Lobby/Control"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
@@ -297,22 +406,22 @@ offset_right = 53.0
 offset_bottom = 39.0
 text = "Leave"
 
-[node name="VBox" type="VBoxContainer" parent="Menu/Lobby"]
+[node name="VBox" type="VBoxContainer" parent="UI/Lobby"]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="Title" type="Label" parent="Menu/Lobby/VBox"]
+[node name="Title" type="Label" parent="UI/Lobby/VBox"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "Lobby"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerListLabel" type="Label" parent="Menu/Lobby/VBox"]
+[node name="PlayerListLabel" type="Label" parent="UI/Lobby/VBox"]
 layout_mode = 2
 text = "Players"
 
-[node name="PlayerList" type="ItemList" parent="Menu/Lobby/VBox"]
+[node name="PlayerList" type="ItemList" parent="UI/Lobby/VBox"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 3
@@ -321,26 +430,27 @@ allow_search = false
 item_count = 1
 item_0/text = "hejhej"
 
-[node name="Start" type="Button" parent="Menu/Lobby/VBox"]
+[node name="Start" type="Button" parent="UI/Lobby/VBox"]
 layout_mode = 2
 text = "Start game"
 
-[node name="WaitingLabel" type="Label" parent="Menu/Lobby/VBox"]
+[node name="WaitingLabel" type="Label" parent="UI/Lobby/VBox"]
 layout_mode = 2
 text = "Waiting for server to start"
 
-[node name="Separator" type="Control" parent="Menu/Lobby/VBox"]
+[node name="Separator" type="Control" parent="UI/Lobby/VBox"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="ErrorDialog" type="AcceptDialog" parent="Menu"]
+[node name="ErrorDialog" type="AcceptDialog" parent="UI"]
+auto_translate_mode = 1
 initial_position = 1
 
-[connection signal="pressed" from="Menu/MainMenu/VBox/HostGame" to="Menu" method="set_view" binds= ["HostGame"]]
-[connection signal="pressed" from="Menu/MainMenu/VBox/JoinGame" to="Menu" method="set_view" binds= ["JoinGame"]]
-[connection signal="pressed" from="Menu/HostGame/Control/Back" to="Menu" method="set_view" binds= ["MainMenu"]]
-[connection signal="pressed" from="Menu/HostGame/VBox/Host" to="Menu" method="_on_host_pressed"]
-[connection signal="pressed" from="Menu/JoinGame/Control/Back" to="Menu" method="set_view" binds= ["MainMenu"]]
-[connection signal="pressed" from="Menu/JoinGame/VBox/Join" to="Menu" method="_on_join_pressed"]
-[connection signal="pressed" from="Menu/Lobby/Control/Leave" to="Menu" method="_on_lobby_leave_pressed"]
-[connection signal="pressed" from="Menu/Lobby/VBox/Start" to="Menu" method="_on_start_pressed"]
+[connection signal="pressed" from="UI/MainMenu/VBox/HostGame" to="UI" method="set_view" binds= ["HostGame"]]
+[connection signal="pressed" from="UI/MainMenu/VBox/JoinGame" to="UI" method="set_view" binds= ["JoinGame"]]
+[connection signal="pressed" from="UI/HostGame/Control/Back" to="UI" method="set_view" binds= ["MainMenu"]]
+[connection signal="pressed" from="UI/HostGame/VBox/Host" to="UI" method="_on_host_pressed"]
+[connection signal="pressed" from="UI/JoinGame/Control/Back" to="UI" method="set_view" binds= ["MainMenu"]]
+[connection signal="pressed" from="UI/JoinGame/VBox/Join" to="UI" method="_on_join_pressed"]
+[connection signal="pressed" from="UI/Lobby/Control/Leave" to="UI" method="_on_lobby_leave_pressed"]
+[connection signal="pressed" from="UI/Lobby/VBox/Start" to="UI" method="_on_start_pressed"]

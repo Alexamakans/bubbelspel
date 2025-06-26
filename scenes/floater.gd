@@ -1,17 +1,17 @@
 extends Node3D
 class_name Floater
 
-var depth_before_submerged = 1.0
+@export var water_drag: float = 0.99
+@export var water_angular_drag: float = 0.5
+@export var force_multiplier: float = 1.0
 
-var floater_count = 0
+@export var enabled: bool = true
 
-@export var water_drag = 0.99
-@export var water_angular_drag = 0.5
-@export var force_multiplier = 1.0
+@onready var world: World = World.find_world_from_parent(self)
+@onready var body: RigidBody3D = find_rigidbody()
 
-@export var enabled = true
-
-var body: RigidBody3D
+var depth_before_submerged: float = 1.0
+var floater_count: int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,13 +21,13 @@ func _ready():
 		if c.get_script() == get_script():
 			floater_count += 1
 
-	# Recursively try to find RigidBody3D parent
-	var parent: Node = get_parent()
-	while parent != null:
-		if parent is RigidBody3D:
-			body = parent
-			break
-		parent = parent.get_parent()
+func find_rigidbody() -> RigidBody3D:
+	var node: Node = self
+	while node != null:
+		node = node.get_parent()
+		if node is RigidBody3D:
+			return node
+	return null
 
 func _physics_process(_delta: float) -> void:
 	if not enabled:
@@ -37,7 +37,7 @@ func _physics_process(_delta: float) -> void:
 	# reeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 	var world_coord_offset = global_position - (body.center_of_mass + body.global_position)
 
-	var wave = Globals.instance.water.get_wave(global_position.x, global_position.z)
+	var wave = world.water.get_wave(global_position.x, global_position.z)
 	var wave_height = wave.y
 	var height = global_position.y
 

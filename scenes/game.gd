@@ -1,4 +1,7 @@
+class_name Game
 extends Node
+
+static var instance: Game
 
 # This file contains modified version of the Godot demo project "multiplayer_bomber"
 # https://github.com/godotengine/godot-demo-projects/tree/8be477ce38d9f877e5fb32d773a19683fca83d7a/networking/multiplayer_bomber
@@ -8,6 +11,9 @@ extends Node
 
 # Max number of players.
 const MAX_PEERS = 12
+
+@export var world_home: Node
+@export var current_world: World
 
 var peer: ENetMultiplayerPeer = null
 
@@ -23,6 +29,16 @@ signal connection_failed()
 signal connection_succeeded()
 signal game_ended()
 signal game_error(what: String)
+
+
+func _enter_tree() -> void:
+	instance = self
+
+
+func _exit_tree() -> void:
+	if instance == self:
+		instance = null
+
 
 # Callback from SceneTree.
 func _player_connected(id: int) -> void:
@@ -74,22 +90,6 @@ func unregister_player(id: int) -> void:
 	player_list_changed.emit()
 
 
-@rpc("call_local")
-func load_world() -> void:
-	print("Loading world")
-	# Change scene.
-	var world: Node = load("res://scenes/world.tscn").instantiate()
-	get_tree().get_root().add_child(world)
-	var lobby: Lobby = get_tree().get_root().get_node("Menu/Menu")
-	lobby.set_view(Lobby.VIEW_NONE)
-
-	# Set up score.
-	#world.get_node("Score").add_player(multiplayer.get_unique_id(), player_name)
-	#for pn in players:
-	#	world.get_node("Score").add_player(pn, players[pn])
-	#get_tree().set_pause(false) # Unpause and unleash the game!
-
-
 func host_game(new_player_name: String, port: int) -> void:
 	player_name = new_player_name
 	peer = ENetMultiplayerPeer.new()
@@ -114,14 +114,32 @@ func get_player_name() -> String:
 	return player_name
 
 
-func begin_game() -> void:
-	assert(multiplayer.is_server())
-	load_world.rpc()
+func start_game() -> void:
+	var lobby: Lobby = get_tree().get_root().get_node("Game/Menu/UI")
+	lobby.set_view(Lobby.VIEW_NONE)
 
-	print("Starting game")
+	if multiplayer.is_server():
+		# Only load world on server. Clients will get world via the spawner.
+		load_world.call_deferred(load("res://scenes/world.tscn"))
 
-	var world = get_tree().get_root().get_node("World")
-	var player_scene = load("res://scenes/player.tscn")
+
+func unload_world() -> void:
+	for child in world_home.get_children():
+		world_home.remove_child(child)
+		child.queue_free()
+
+
+func load_world(scene: PackedScene) -> void:
+	print("Loading world")
+
+	# Remove old world (if any)
+	unload_world()
+
+	# Change scene.
+	var world: Node = scene.instantiate()
+	world_home.add_child(world)
+
+	var player_scene: PackedScene = load("res://scenes/player.tscn")
 
 	# Create a dictionary with peer id and respective spawn points, could be improved by randomizing.
 	var spawn_points: Dictionary[int, int] = {}
@@ -135,21 +153,22 @@ func begin_game() -> void:
 		var spawn_pos: Node3D = world.get_node("SpawnPoints/" + str(spawn_points[p_id]))
 		var player: Player = player_scene.instantiate()
 		player.player_id = p_id
-		#player.synced_position = spawn_pos
 		player.position = spawn_pos.global_position
 		player.rotation = spawn_pos.global_rotation
 		player.name = "Player " + str(p_id)
-		#player.set_player_name(player_name if p_id == multiplayer.get_unique_id() else players[p_id])
 		world.get_node("Players").add_child(player)
+
+	# Set up score.
+	#world.get_node("Score").add_player(multiplayer.get_unique_id(), player_name)
+	#for pn in players:
+	#	world.get_node("Score").add_player(pn, players[pn])
+	#get_tree().set_pause(false) # Unpause and unleash the game!
 
 
 func end_game() -> void:
 	print("Ending game")
 
-	if has_node("/root/World"): # Game is in progress.
-		# End it
-		get_node("/root/World").queue_free()
-
+	unload_world()
 	game_ended.emit()
 	players.clear()
 

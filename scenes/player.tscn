@@ -1,7 +1,7 @@
 [gd_scene load_steps=30 format=3 uid="uid://dl8sae6e1wjis"]
 
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
-[ext_resource type="Script" uid="uid://bmd6kgqdisbye" path="res://scenes/Floater.gd" id="2_g2els"]
+[ext_resource type="Script" uid="uid://bmd6kgqdisbye" path="res://scenes/floater.gd" id="2_g2els"]
 [ext_resource type="Script" uid="uid://djnm2ji7a3aq2" path="res://scenes/player_input.gd" id="2_smehm"]
 [ext_resource type="Script" path="res://scenes/pidcontroller.gd" id="3_qhqgy"]
 [ext_resource type="PackedScene" uid="uid://5wx77pssi7ja" path="res://scenes/cruiser01.tscn" id="4_dqkch"]
@@ -345,6 +345,3 @@ y_look_speed = 0.4
 x_look_curve = SubResource("Curve_d2wvv")
 x_look_deg_close = 5.0
 x_look_deg_far = 40.0
-
-[connection signal="ready_as_other_player" from="." to="Binoculars" method="queue_free"]
-[connection signal="ready_as_other_player" from="." to="OrbitCamera" method="queue_free"]

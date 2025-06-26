@@ -287,10 +287,9 @@ current = true
 fov = 80.0
 script = ExtResource("4_k0juu")
 focus_point = NodePath("../player")
-distance_min = 50.0
-distance_max = 800.0
-zoom_speed = 1400.0
-y_look_speed = 0.5
+distance_min = 5.0
+zoom_speed = 200.0
+y_look_speed = 0.4
 x_look_curve = SubResource("Curve_i7141")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]

@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bmd6kgqdisbye" path="res://scenes/Floater.gd" id="2_g2els"]
-[ext_resource type="Script" uid="uid://ddq4spibswv02" path="res://scenes/pidcontroller.gd" id="3_qhqgy"]
-[ext_resource type="PackedScene" uid="uid://bdhxp3q0pjnh6" path="res://models/cruiser01.glb" id="4_dqkch"]
+[ext_resource type="Script" path="res://scenes/pidcontroller.gd" id="3_qhqgy"]
+[ext_resource type="PackedScene" uid="uid://5wx77pssi7ja" path="res://scenes/cruiser01.tscn" id="4_dqkch"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qhqgy"]
 albedo_color = Color(0.811183, 0.957611, 0, 1)
@@ -108,7 +108,7 @@ output_max = 200.0
 [node name="Floaters" type="Node3D" parent="."]
 
 [node name="Floater" type="Node3D" parent="Floaters"]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, -13.401)
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, -12.6141)
 script = ExtResource("2_g2els")
 water_drag = 0.98
 water_angular_drag = 0.2
@@ -188,7 +188,7 @@ material_override = SubResource("StandardMaterial3D_qhqgy")
 mesh = SubResource("SphereMesh_dqkch")
 
 [node name="Floater4" type="Node3D" parent="Floaters"]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 11.9195)
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 13.1902)
 script = ExtResource("2_g2els")
 water_drag = 0.98
 water_angular_drag = 0.2
@@ -202,8 +202,8 @@ mesh = SubResource("SphereMesh_dqkch")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.282017, 0)
 shape = SubResource("BoxShape3D_u8vuu")
 
-[node name="cruiser01" parent="." instance=ExtResource("4_dqkch")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+[node name="cruiser02" parent="." instance=ExtResource("4_dqkch")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0.864423)
 
 [node name="ProgressBarForward" type="ProgressBar" parent="."]
 anchors_preset = 11
@@ -275,10 +275,6 @@ step = 0.001
 value = 0.1
 fill_mode = 1
 show_percentage = false
-
-[node name="CameraFocusPoint" type="Marker3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 5, 0)
-gizmo_extents = 5.0
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.53703)

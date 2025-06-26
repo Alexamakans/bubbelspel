@@ -18,7 +18,7 @@ func _ready() -> void:
 
 	var camera_forward: Vector3 = -global_basis.z
 	y_rad_current = atan2(camera_forward.x, -camera_forward.z)
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _process(delta: float) -> void:
 	if not current:
@@ -33,7 +33,7 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("look_zoom_out"):
 		distance_current += zoom_speed * delta
 		distance_current = clampf(distance_current, distance_min, distance_max)
-	
+
 	update()
 
 

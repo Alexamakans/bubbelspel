@@ -266,6 +266,10 @@ remote_path = NodePath("../../Binoculars")
 update_rotation = false
 update_scale = false
 
+[node name="CameraFocusPoint" type="Marker3D" parent="player"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 5, 0)
+gizmo_extents = 5.0
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.863597, -0.0851732, -0.496936, 0.500908, 0.032798, 0.864879, -0.057366, -0.995826, 0.0709882, 0, 2.78665, 0)
 shadow_enabled = true
@@ -286,9 +290,10 @@ environment = SubResource("Environment_qfnet")
 current = true
 fov = 80.0
 script = ExtResource("4_k0juu")
-focus_point = NodePath("../player")
+focus_point = NodePath("../player/CameraFocusPoint")
 distance_min = 5.0
-zoom_speed = 200.0
+distance_max = 25.0
+zoom_speed = 80.0
 y_look_speed = 0.4
 x_look_curve = SubResource("Curve_i7141")
 

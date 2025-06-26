@@ -1,8 +1,9 @@
-[gd_scene load_steps=29 format=3 uid="uid://dl8sae6e1wjis"]
+[gd_scene load_steps=21 format=3 uid="uid://dl8sae6e1wjis"]
 
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bmd6kgqdisbye" path="res://scenes/Floater.gd" id="2_g2els"]
-[ext_resource type="Script" uid="uid://ddq4spibswv02" path="res://scenes/pidcontroller.gd" id="3_qhqgy"]
+[ext_resource type="Script" path="res://scenes/pidcontroller.gd" id="3_qhqgy"]
+[ext_resource type="PackedScene" uid="uid://5wx77pssi7ja" path="res://models/cruiser01.tscn" id="4_dqkch"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qhqgy"]
 albedo_color = Color(0.811183, 0.957611, 0, 1)
@@ -13,30 +14,6 @@ height = 5.902
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u8vuu"]
 size = Vector3(2.73413, 1.57422, 23.9258)
-
-[sub_resource type="BoxMesh" id="BoxMesh_3vyb7"]
-size = Vector3(28, 17, 240)
-
-[sub_resource type="BoxMesh" id="BoxMesh_g2els"]
-size = Vector3(18, 5, 60)
-
-[sub_resource type="BoxMesh" id="BoxMesh_qhqgy"]
-size = Vector3(18, 5, 60)
-
-[sub_resource type="BoxMesh" id="BoxMesh_dqkch"]
-size = Vector3(18, 5, 33.35)
-
-[sub_resource type="BoxMesh" id="BoxMesh_fjrip"]
-size = Vector3(6.015, 5, 33.35)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g2els"]
-albedo_color = Color(0.2, 0.2, 0.2, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_qlg0r"]
-size = Vector3(18, 20, 30)
-
-[sub_resource type="BoxMesh" id="BoxMesh_tuyoq"]
-size = Vector3(5, 50, 5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3vyb7"]
 bg_color = Color(0.274665, 0.521662, 0.279309, 1)
@@ -49,9 +26,6 @@ bg_color = Color(0.46, 0.46, 0.46, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dqkch"]
 bg_color = Color(0.46, 0.46, 0.46, 1)
-
-[sub_resource type="PrismMesh" id="PrismMesh_g2els"]
-size = Vector3(28, 20, 240)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_qhqgy"]
 frequency = 0.0127
@@ -131,94 +105,96 @@ derivative_gain = 2.0
 output_min = -200.0
 output_max = 200.0
 
-[node name="Floater" type="Node3D" parent="."]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, -12)
+[node name="Floaters" type="Node3D" parent="."]
+
+[node name="Floater" type="Node3D" parent="Floaters"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, -13.401)
 script = ExtResource("2_g2els")
 water_drag = 0.98
 water_angular_drag = 0.2
 force_multiplier = 1.8
 
-[node name="Marker" type="MeshInstance3D" parent="Floater"]
+[node name="Marker" type="MeshInstance3D" parent="Floaters/Floater"]
 material_override = SubResource("StandardMaterial3D_qhqgy")
 mesh = SubResource("SphereMesh_dqkch")
 
-[node name="Floater2" type="Node3D" parent="."]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 2, 0, 0)
+[node name="Floater2" type="Node3D" parent="Floaters"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 2.5, 0, 0)
 script = ExtResource("2_g2els")
 water_drag = 0.98
 water_angular_drag = 0.2
 force_multiplier = 1.8
 
-[node name="Marker" type="MeshInstance3D" parent="Floater2"]
+[node name="Marker" type="MeshInstance3D" parent="Floaters/Floater2"]
 material_override = SubResource("StandardMaterial3D_qhqgy")
 mesh = SubResource("SphereMesh_dqkch")
 skeleton = NodePath("../../Floater")
 
-[node name="Floater3" type="Node3D" parent="."]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -2, 0, 0)
+[node name="Floater3" type="Node3D" parent="Floaters"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -2.5, 0, 0)
 script = ExtResource("2_g2els")
 water_drag = 0.98
 water_angular_drag = 0.2
 force_multiplier = 1.8
 
-[node name="Marker" type="MeshInstance3D" parent="Floater3"]
+[node name="Marker" type="MeshInstance3D" parent="Floaters/Floater3"]
 material_override = SubResource("StandardMaterial3D_qhqgy")
 mesh = SubResource("SphereMesh_dqkch")
 
-[node name="Floater5" type="Node3D" parent="."]
+[node name="Floater5" type="Node3D" parent="Floaters"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 2, 0, -8)
 script = ExtResource("2_g2els")
 water_drag = 0.98
 water_angular_drag = 0.2
 force_multiplier = 1.8
 
-[node name="Marker" type="MeshInstance3D" parent="Floater5"]
+[node name="Marker" type="MeshInstance3D" parent="Floaters/Floater5"]
 material_override = SubResource("StandardMaterial3D_qhqgy")
 mesh = SubResource("SphereMesh_dqkch")
 skeleton = NodePath("../../Floater")
 
-[node name="Floater6" type="Node3D" parent="."]
+[node name="Floater6" type="Node3D" parent="Floaters"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -2, 0, -8)
 script = ExtResource("2_g2els")
 water_drag = 0.98
 water_angular_drag = 0.2
 force_multiplier = 1.8
 
-[node name="Marker" type="MeshInstance3D" parent="Floater6"]
+[node name="Marker" type="MeshInstance3D" parent="Floaters/Floater6"]
 material_override = SubResource("StandardMaterial3D_qhqgy")
 mesh = SubResource("SphereMesh_dqkch")
 
-[node name="Floater7" type="Node3D" parent="."]
+[node name="Floater7" type="Node3D" parent="Floaters"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 2, 0, 8)
 script = ExtResource("2_g2els")
 water_drag = 0.98
 water_angular_drag = 0.2
 force_multiplier = 1.8
 
-[node name="Marker" type="MeshInstance3D" parent="Floater7"]
+[node name="Marker" type="MeshInstance3D" parent="Floaters/Floater7"]
 material_override = SubResource("StandardMaterial3D_qhqgy")
 mesh = SubResource("SphereMesh_dqkch")
 skeleton = NodePath("../../Floater")
 
-[node name="Floater8" type="Node3D" parent="."]
+[node name="Floater8" type="Node3D" parent="Floaters"]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -2, 0, 8)
 script = ExtResource("2_g2els")
 water_drag = 0.98
 water_angular_drag = 0.2
 force_multiplier = 1.8
 
-[node name="Marker" type="MeshInstance3D" parent="Floater8"]
+[node name="Marker" type="MeshInstance3D" parent="Floaters/Floater8"]
 material_override = SubResource("StandardMaterial3D_qhqgy")
 mesh = SubResource("SphereMesh_dqkch")
 
-[node name="Floater4" type="Node3D" parent="."]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 12)
+[node name="Floater4" type="Node3D" parent="Floaters"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 11.9195)
 script = ExtResource("2_g2els")
 water_drag = 0.98
 water_angular_drag = 0.2
 force_multiplier = 1.8
 
-[node name="Marker" type="MeshInstance3D" parent="Floater4"]
+[node name="Marker" type="MeshInstance3D" parent="Floaters/Floater4"]
 material_override = SubResource("StandardMaterial3D_qhqgy")
 mesh = SubResource("SphereMesh_dqkch")
 
@@ -226,34 +202,8 @@ mesh = SubResource("SphereMesh_dqkch")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.282017, 0)
 shape = SubResource("BoxShape3D_u8vuu")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.245111, 0)
-mesh = SubResource("BoxMesh_3vyb7")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.32205, 0)
-mesh = SubResource("BoxMesh_g2els")
-
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.32205, 7.63508)
-mesh = SubResource("BoxMesh_qhqgy")
-
-[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.32205, -7.06084)
-mesh = SubResource("BoxMesh_dqkch")
-
-[node name="MeshInstance3D7" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, 0.0790176, -0.0612879, 0, 0.0612879, 0.0790176, 0, 2.04181, -7.16043)
-mesh = SubResource("BoxMesh_fjrip")
-surface_material_override/0 = SubResource("StandardMaterial3D_g2els")
-
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.85895, 0.791709)
-mesh = SubResource("BoxMesh_qlg0r")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -3.8147e-07, 4.00734, 0.31108)
-mesh = SubResource("BoxMesh_tuyoq")
+[node name="cruiser01" parent="." instance=ExtResource("4_dqkch")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="ProgressBarForward" type="ProgressBar" parent="."]
 anchors_preset = 11
@@ -329,10 +279,6 @@ show_percentage = false
 [node name="CameraFocusPoint" type="Marker3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 3.02662, 0)
 gizmo_extents = 5.0
-
-[node name="Kol" type="MeshInstance3D" parent="."]
-transform = Transform3D(-0.1, 8.74228e-09, 0, -8.74228e-09, -0.1, 0, 0, 0, 0.1, 0, -1.57829, 0)
-mesh = SubResource("PrismMesh_g2els")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.53703)

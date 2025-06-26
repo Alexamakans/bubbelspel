@@ -1,9 +1,11 @@
-[gd_scene load_steps=21 format=3 uid="uid://dl8sae6e1wjis"]
+[gd_scene load_steps=28 format=3 uid="uid://dl8sae6e1wjis"]
 
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bmd6kgqdisbye" path="res://scenes/Floater.gd" id="2_g2els"]
 [ext_resource type="Script" path="res://scenes/pidcontroller.gd" id="3_qhqgy"]
 [ext_resource type="PackedScene" uid="uid://5wx77pssi7ja" path="res://scenes/cruiser01.tscn" id="4_dqkch"]
+[ext_resource type="PackedScene" path="res://scenes/binoculars.tscn" id="5_tuyoq"]
+[ext_resource type="Script" uid="uid://ctxyiw2s17xid" path="res://scenes/player_camera.gd" id="6_fjrip"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qhqgy"]
 albedo_color = Color(0.811183, 0.957611, 0, 1)
@@ -74,6 +76,23 @@ radius = 0.25
 height = 0.1
 rings = 5
 is_hemisphere = true
+
+[sub_resource type="Curve" id="Curve_smehm"]
+_data = [Vector2(0, 0), 0.0, -0.0564621, 0, 0, Vector2(0.15515, 0.0462617), 0.493342, 0.493342, 0, 0, Vector2(0.810952, 0.887617), 1.27577, 1.27577, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ur7pv"]
+
+[sub_resource type="Sky" id="Sky_4wyf3"]
+sky_material = SubResource("ProceduralSkyMaterial_ur7pv")
+
+[sub_resource type="Environment" id="Environment_y4r1p"]
+background_mode = 2
+sky = SubResource("Sky_4wyf3")
+
+[sub_resource type="Curve" id="Curve_d2wvv"]
+_data = [Vector2(0, 0), 0.0, 0.487478, 0, 0, Vector2(0.501799, 0.885445), 1.19983, 1.19983, 0, 0, Vector2(1, 1), -0.436029, 0.0, 0, 0]
+point_count = 3
 
 [node name="player" type="RigidBody3D" node_paths=PackedStringArray("speed_forward_bar", "speed_reverse_bar", "rot_starboard_bar", "rot_portside_bar")]
 gravity_scale = 0.0
@@ -285,3 +304,34 @@ explosiveness = 0.03
 randomness = 0.35
 process_material = SubResource("ParticleProcessMaterial_fjrip")
 draw_pass_1 = SubResource("SphereMesh_smehm")
+
+[node name="BinocularMount" type="RemoteTransform3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7, 0)
+remote_path = NodePath("../Binoculars")
+update_rotation = false
+update_scale = false
+
+[node name="Binoculars" parent="." node_paths=PackedStringArray("mount_location") instance=ExtResource("5_tuyoq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7, 0)
+top_level = true
+mount_location = NodePath("../BinocularMount")
+pitch_sensitivity = 0.75
+yaw_sensitivity = 4.0
+curve = SubResource("Curve_smehm")
+lerp_time_seconds = 1.2
+
+[node name="OrbitCamera" type="Camera3D" parent="." node_paths=PackedStringArray("focus_point")]
+transform = Transform3D(1, 0, 0, 0, 0.902555, 0.430574, 0, -0.430574, 0.902555, 1.29224, 78.845, -16.036)
+top_level = true
+environment = SubResource("Environment_y4r1p")
+current = true
+fov = 80.0
+script = ExtResource("6_fjrip")
+focus_point = NodePath("../BinocularMount")
+distance_min = 5.0
+distance_max = 25.0
+zoom_speed = 80.0
+y_look_speed = 0.4
+x_look_curve = SubResource("Curve_d2wvv")
+x_look_deg_close = 5.0
+x_look_deg_far = 40.0

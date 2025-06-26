@@ -14,7 +14,7 @@ var y_rad_current: float # aka yaw
 
 func _ready() -> void:
 	var vector: Vector3 = focus_point.global_position - global_position
-	distance_current = vector.length()
+	distance_current = clampf(vector.length(), distance_min, distance_max)
 
 	var camera_forward: Vector3 = -global_basis.z
 	y_rad_current = atan2(camera_forward.x, -camera_forward.z)

@@ -277,7 +277,7 @@ mount_location = NodePath("../player/BinocularMount")
 pitch_sensitivity = 0.75
 yaw_sensitivity = 4.0
 curve = SubResource("Curve_oo54l")
-lerp_time_seconds = 0.4
+lerp_time_seconds = 1.2
 
 [node name="OrbitCamera" type="Camera3D" parent="." node_paths=PackedStringArray("focus_point")]
 transform = Transform3D(1, 0, 0, 0, 0.902555, 0.430574, 0, -0.430574, 0.902555, 1.29224, 78.845, -16.036)

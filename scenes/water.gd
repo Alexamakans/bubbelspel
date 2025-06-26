@@ -18,10 +18,7 @@ var wave_c_dir: Vector2
 
 
 func _ready():
-	print("setting mat of water")
 	mat = get_surface_override_material(0)
-	print("finished setting mat of water")
-	print(mat)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

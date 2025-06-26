@@ -1,0 +1,15 @@
+[gd_resource type="Environment" load_steps=4 format=3 uid="uid://c17pf68fvxuvq"]
+
+[ext_resource type="Texture2D" uid="uid://c3mub6nxxi4ht" path="res://textures/DaySkyHDRI027B_4K-HDR.exr" id="1_0wybp"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_scygu"]
+panorama = ExtResource("1_0wybp")
+energy_multiplier = 3.5
+
+[sub_resource type="Sky" id="Sky_4wyf3"]
+sky_material = SubResource("PanoramaSkyMaterial_scygu")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_4wyf3")
+glow_enabled = true

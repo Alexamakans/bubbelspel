@@ -1,13 +1,14 @@
-[gd_scene load_steps=30 format=3 uid="uid://dl8sae6e1wjis"]
+[gd_scene load_steps=31 format=3 uid="uid://dl8sae6e1wjis"]
 
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bmd6kgqdisbye" path="res://scenes/Floater.gd" id="2_g2els"]
-[ext_resource type="Script" uid="uid://djnm2ji7a3aq2" path="res://scenes/player_input.gd" id="2_smehm"]
-[ext_resource type="Script" path="res://scenes/pidcontroller.gd" id="3_qhqgy"]
+[ext_resource type="Script" path="res://scenes/player_input.gd" id="2_smehm"]
+[ext_resource type="Script" uid="uid://ddq4spibswv02" path="res://scenes/pidcontroller.gd" id="3_qhqgy"]
 [ext_resource type="PackedScene" uid="uid://5wx77pssi7ja" path="res://scenes/cruiser01.tscn" id="4_dqkch"]
-[ext_resource type="PackedScene" uid="uid://cgj7ug0ncnbfa" path="res://scenes/binoculars.tscn" id="5_tuyoq"]
+[ext_resource type="PackedScene" uid="uid://bgwibwn48yseh" path="res://scenes/binoculars.tscn" id="5_tuyoq"]
 [ext_resource type="Script" uid="uid://ctxyiw2s17xid" path="res://scenes/player_camera.gd" id="6_fjrip"]
 [ext_resource type="Environment" uid="uid://c17pf68fvxuvq" path="res://environment.tres" id="6_smehm"]
+[ext_resource type="Script" uid="uid://b4shauuu0sxp0" path="res://scenes/shoot_controls.gd" id="9_ur7pv"]
 
 [sub_resource type="Curve" id="Curve_ur7pv"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
@@ -234,6 +235,9 @@ shape = SubResource("BoxShape3D_u8vuu")
 [node name="cruiser02" parent="." instance=ExtResource("4_dqkch")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0.864423)
 
+[node name="CannonFront" type="Node3D" parent="cruiser02"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.97984e-07, 3.50528, 7.71905)
+
 [node name="ProgressBarForward" type="ProgressBar" parent="."]
 anchors_preset = 11
 anchor_left = 1.0
@@ -345,6 +349,11 @@ y_look_speed = 0.4
 x_look_curve = SubResource("Curve_d2wvv")
 x_look_deg_close = 5.0
 x_look_deg_far = 40.0
+
+[node name="ShootControls" type="Node3D" parent="." node_paths=PackedStringArray("cannon")]
+script = ExtResource("9_ur7pv")
+cannon = NodePath("../cruiser02/CannonFront")
+metadata/_custom_type_script = "uid://b4shauuu0sxp0"
 
 [connection signal="ready_as_other_player" from="." to="Binoculars" method="queue_free"]
 [connection signal="ready_as_other_player" from="." to="OrbitCamera" method="queue_free"]

@@ -1,12 +1,21 @@
-[gd_scene load_steps=26 format=3 uid="uid://dl8sae6e1wjis"]
+[gd_scene load_steps=30 format=3 uid="uid://dl8sae6e1wjis"]
 
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bmd6kgqdisbye" path="res://scenes/Floater.gd" id="2_g2els"]
+[ext_resource type="Script" uid="uid://djnm2ji7a3aq2" path="res://scenes/player_input.gd" id="2_smehm"]
 [ext_resource type="Script" path="res://scenes/pidcontroller.gd" id="3_qhqgy"]
 [ext_resource type="PackedScene" uid="uid://5wx77pssi7ja" path="res://scenes/cruiser01.tscn" id="4_dqkch"]
 [ext_resource type="PackedScene" uid="uid://cgj7ug0ncnbfa" path="res://scenes/binoculars.tscn" id="5_tuyoq"]
 [ext_resource type="Script" uid="uid://ctxyiw2s17xid" path="res://scenes/player_camera.gd" id="6_fjrip"]
 [ext_resource type="Environment" uid="uid://c17pf68fvxuvq" path="res://environment.tres" id="6_smehm"]
+
+[sub_resource type="Curve" id="Curve_ur7pv"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_smehm"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ur7pv"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qhqgy"]
 albedo_color = Color(0.811183, 0.957611, 0, 1)
@@ -86,7 +95,7 @@ point_count = 4
 _data = [Vector2(0, 0), 0.0, 0.487478, 0, 0, Vector2(0.501799, 0.885445), 1.19983, 1.19983, 0, 0, Vector2(1, 1), -0.436029, 0.0, 0, 0]
 point_count = 3
 
-[node name="player" type="RigidBody3D" node_paths=PackedStringArray("speed_forward_bar", "speed_reverse_bar", "rot_starboard_bar", "rot_portside_bar")]
+[node name="Player" type="RigidBody3D" node_paths=PackedStringArray("speed_forward_bar", "speed_reverse_bar", "rot_starboard_bar", "rot_portside_bar")]
 gravity_scale = 0.0
 inertia = Vector3(50, 50, 50)
 angular_damp_mode = 1
@@ -95,11 +104,20 @@ script = ExtResource("1_3vyb7")
 speed_forward_max = 32.0
 speed_reverse_max = 16.0
 speed_acceleration = 6.0
+rot_scale_curve = SubResource("Curve_ur7pv")
 speed_forward_bar = NodePath("ProgressBarForward")
 speed_reverse_bar = NodePath("ProgressBarReverse")
 rot_starboard_bar = NodePath("ProgressBarStarboard")
 rot_portside_bar = NodePath("ProgressBarPortside")
 metadata/_edit_vertical_guides_ = [576.0]
+
+[node name="ServerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_smehm")
+
+[node name="PlayerInput" type="MultiplayerSynchronizer" parent="."]
+root_path = NodePath(".")
+replication_config = SubResource("SceneReplicationConfig_ur7pv")
+script = ExtResource("2_smehm")
 
 [node name="PIDController_X" type="Node" parent="."]
 script = ExtResource("3_qhqgy")
@@ -327,3 +345,6 @@ y_look_speed = 0.4
 x_look_curve = SubResource("Curve_d2wvv")
 x_look_deg_close = 5.0
 x_look_deg_far = 40.0
+
+[connection signal="ready_as_other_player" from="." to="Binoculars" method="queue_free"]
+[connection signal="ready_as_other_player" from="." to="OrbitCamera" method="queue_free"]

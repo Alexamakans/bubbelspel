@@ -1,3 +1,4 @@
+class_name Player
 extends RigidBody3D
 
 # Units are m/s
@@ -19,12 +20,29 @@ var rot_current: float = 0.0
 @export var rot_starboard_bar: ProgressBar
 @export var rot_portside_bar: ProgressBar
 
+@export_group("Multiplayer")
+@export var player_id: int = 1:
+	set(id):
+		player_id = id
+		# Can't use "input" var because it may not be set yet
+		$PlayerInput.set_multiplayer_authority(id)
+
+@onready var input: PlayerInput = $PlayerInput
 @onready var pid_x: PIDController = $PIDController_X
 @onready var pid_z: PIDController = $PIDController_Z
 
+signal ready_as_this_player()
+signal ready_as_other_player()
+
+func _ready() -> void:
+	if input.is_multiplayer_authority():
+		ready_as_this_player.emit()
+	else:
+		ready_as_other_player.emit()
+
 func _process(delta: float) -> void:
-	var input_forward: float = Input.get_action_strength("move_forward") * delta * speed_acceleration
-	var input_backward: float = Input.get_action_strength("move_backward") * delta * speed_acceleration
+	var input_forward: float = input.input_forward * delta * speed_acceleration
+	var input_backward: float = input.input_backward * delta * speed_acceleration
 
 	if input_forward > 0:
 		speed_current = min(speed_forward_max, speed_current + input_forward)
@@ -36,7 +54,7 @@ func _process(delta: float) -> void:
 	speed_forward_bar.value = maxf(0, speed_current / speed_forward_max)
 	speed_reverse_bar.value = maxf(0, -speed_current / speed_reverse_max)
 
-	var input_rot = Input.get_axis("move_starboard", "move_portside") * delta * rot_acceleration
+	var input_rot = input.input_rot * delta * rot_acceleration
 	rot_current = clampf(rot_current + input_rot, -rot_angular_velocity_max, rot_angular_velocity_max)
 
 	rot_portside_bar.value = maxf(0, rot_current / rot_angular_velocity_max)
@@ -47,16 +65,17 @@ func _physics_process(delta: float) -> void:
 	movement()
 	stay_upright(delta)
 
+
 func movement() -> void:
 	var f = -global_transform.basis.z * speed_current
 	linear_velocity = Vector3(f.x, linear_velocity.y, f.z)
-	
+
 	var speed_factor: float = 1
 	if speed_current > 0:
 		speed_factor = speed_current / speed_forward_max
 	else:
 		speed_factor = speed_current / speed_reverse_max
-	
+
 	var rot_influenced = rot_current * signf(speed_factor) * rot_scale_curve.sample(abs(speed_factor))
 	angular_velocity.y = deg_to_rad(rot_influenced)
 

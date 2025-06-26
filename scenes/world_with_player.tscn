@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://bfmoc0iap3npd"]
+
+[ext_resource type="PackedScene" uid="uid://ck4sm14vsee4w" path="res://scenes/world.tscn" id="1_77u8d"]
+[ext_resource type="PackedScene" uid="uid://dl8sae6e1wjis" path="res://scenes/player.tscn" id="2_mgtbw"]
+
+[sub_resource type="Curve" id="Curve_kpybi"]
+_data = [Vector2(0, 0.164474), 0.0, 2.28351, 0, 0, Vector2(0.496084, 0.782895), -0.0193825, 0.0, 0, 0, Vector2(0.715405, 1), 1.82464, 0.0, 0, 0]
+point_count = 3
+
+[node name="World" instance=ExtResource("1_77u8d")]
+
+[node name="player" parent="Players" index="0" instance=ExtResource("2_mgtbw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.06364, 20, 0)
+inertia = Vector3(50, 50, 100)
+rot_scale_curve = SubResource("Curve_kpybi")

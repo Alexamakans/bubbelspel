@@ -9,10 +9,14 @@ extends Camera3D
 @export var x_look_deg_close: float = 15
 @export var x_look_deg_far: float = 30
 
+@onready var input: PlayerInput = $"../PlayerInput"
+
 var distance_current: float
 var y_rad_current: float # aka yaw
 
 func _ready() -> void:
+	set_process(input.get_multiplayer_authority() == multiplayer.get_unique_id())
+
 	var vector: Vector3 = focus_point.global_position - global_position
 	distance_current = clampf(vector.length(), distance_min, distance_max)
 
@@ -27,10 +31,10 @@ func _process(delta: float) -> void:
 		update()
 		return
 
-	if Input.is_action_just_pressed("look_zoom_in"):
+	if input.input_zoom_in_just_pressed:
 		distance_current -= zoom_speed * delta
 		distance_current = clampf(distance_current, distance_min, distance_max)
-	if Input.is_action_just_pressed("look_zoom_out"):
+	if input.input_zoom_out_just_pressed:
 		distance_current += zoom_speed * delta
 		distance_current = clampf(distance_current, distance_min, distance_max)
 

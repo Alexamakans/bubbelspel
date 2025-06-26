@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b7n6tsonvgaqu" path="res://scenes/player.gd" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bmd6kgqdisbye" path="res://scenes/Floater.gd" id="2_g2els"]
 [ext_resource type="Script" path="res://scenes/pidcontroller.gd" id="3_qhqgy"]
-[ext_resource type="PackedScene" uid="uid://5wx77pssi7ja" path="res://models/cruiser01.tscn" id="4_dqkch"]
+[ext_resource type="PackedScene" uid="uid://5wx77pssi7ja" path="res://scenes/cruiser01.tscn" id="4_dqkch"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qhqgy"]
 albedo_color = Color(0.811183, 0.957611, 0, 1)

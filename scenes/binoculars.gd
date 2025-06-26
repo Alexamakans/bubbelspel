@@ -1,127 +1,117 @@
 extends Node3D
 class_name Binoculars
 
-@export_group("Control settings")
-@export var sensitivity := 1.0
-
 @export_group("Settings")
+@export var mount_location: RemoteTransform3D
 @export var target_fov := 30.0
 
+@export_group("Control settings")
+@export var pitch_sensitivity := 1.0
+@export var yaw_sensitivity := 1.0
+
 @export_group("Lerp")
+@export var curve: Curve
 @export var lerp_time_seconds := 1.5
-@export var lerp_error_threshold_percentage := 0.00001
 
 @export_group("Vignette")
-@export var target_radius := 0.6
+@export var target_vignette_radius := 0.6
 
 var old_camera: Camera3D
 var old_mouse_mode: Input.MouseMode
 var transitioning := false
 
-@onready var original_local_position := position
-@onready var compass: TextureRect = $Camera/GUI/CenterContainer/Compass
+@onready var parent := get_parent()
 @onready var camera: Camera3D = $Camera
+@onready var compass: TextureRect = $Camera/GUI/CenterContainer/Compass
 @onready var vignette: ColorRect = $Camera/GUI/Vignette
-var invisible_vignette_radius := 2.0
-var current_vignette_radius := 2.0
+const invisible_vignette_radius := 2.0
+var current_vignette_radius := invisible_vignette_radius
 
 var mouse_delta := Vector2(0, 0)
-var current_pitch_degrees := 0.0
+var zoomed_seconds := 0.0
+
+enum State {
+	ZOOMED_OUT,
+	ZOOMED_IN,
+	ZOOMING_IN,
+	ZOOMING_OUT,
+}
+var state := State.ZOOMED_OUT
 
 func _ready() -> void:
 	compass.hide()
+	mount_location.remote_path = get_path()
 
 func _process(delta: float) -> void:
-	var lerp_speed := -log(lerp_error_threshold_percentage) / lerp_time_seconds
-	if Input.is_action_pressed("look_binoculars"):
-		if not camera.current:
-			old_camera = get_viewport().get_camera_3d()
-			old_mouse_mode = Input.get_mouse_mode()
-			
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-			global_transform = old_camera.global_transform
+	if state == State.ZOOMED_OUT and Input.is_action_just_pressed("look_binoculars"):
+		old_camera = get_viewport().get_camera_3d()
+		old_mouse_mode = Input.get_mouse_mode()
 		
-		camera.current = true
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		global_transform = old_camera.global_transform
+		mount_location.update_position = false
 		
-		var cur_pos := camera.global_position
-		var target_pos: Vector3 = get_parent().global_position + original_local_position
-		transitioning = cur_pos.distance_to(target_pos) > 0.5
-
-		if cur_pos.distance_to(target_pos) < 20.0:
-			compass.show()
-			_update_mouselook()
-
-		if transitioning:
-			# Rotation
-			camera.look_at(target_pos)
-
-			# Position
-			camera.global_position = Vector3(
-				lerpf(cur_pos.x, target_pos.x, 1.0 - exp(-lerp_speed * delta)),
-				lerpf(cur_pos.y, target_pos.y, 1.0 - exp(-lerp_speed * delta * 1.05)),
-				lerpf(cur_pos.z, target_pos.z, 1.0 - exp(-lerp_speed * delta))
-			)
-
-			# fov
-			camera.fov = lerpf(
-				camera.fov,
-				target_fov,
-				1.0 - exp(-lerp_speed * delta * 0.6))
-
-			current_vignette_radius = lerpf(current_vignette_radius, target_radius, 1.0 - exp(-lerp_speed * delta));
-			vignette.set_instance_shader_parameter("radius", current_vignette_radius)
-		else:
-			compass.show()
-			camera.global_position = target_pos
-			# fov
-			camera.fov = lerpf(
-				camera.fov,
-				target_fov,
-				1.0 - exp(-lerp_speed * delta))
-
-			vignette.set_instance_shader_parameter("radius", target_radius)
-
-			_update_mouselook()
-			old_camera.global_rotation = camera.global_rotation
+	if state == State.ZOOMING_IN or Input.is_action_pressed("look_binoculars"):
+		zoom_in(delta)
 	elif camera.current:
-		compass.hide()
-		# Transition back to old camera
-		var cur_pos := camera.global_position
-		var target_pos: Vector3 = old_camera.global_position
+		zoom_out(delta)
 
-		transitioning = cur_pos.distance_to(target_pos) > 2.0
+func zoom_in(delta: float) -> void:
+	zoomed_seconds = min(lerp_time_seconds, zoomed_seconds + delta)
+	var t := curve.sample(zoomed_seconds / lerp_time_seconds)
+	camera.current = true
+	transitioning = t < 1
 
-		if transitioning:
-			# fov
-			camera.fov = lerpf(
-				camera.fov,
-				old_camera.fov,
-				1.0 - exp(-lerp_speed * delta * 0.9))
+	if transitioning:
+		state = State.ZOOMING_IN
+		mount_location.update_position = false
+		lerp_camera(t)
+	else:
+		state = State.ZOOMED_IN
+		compass.show()
+		mount_location.update_position = true
+		camera.global_position = mount_location.global_position
 
-			# Rotation
-			var cur_global_rotation := camera.global_basis.get_rotation_quaternion()
-			var target_global_rotation := old_camera.global_basis.get_rotation_quaternion()
-			camera.global_basis = Basis(cur_global_rotation.slerp(target_global_rotation, 1.0 - exp(-lerp_speed * delta * 1.1)))
+		_update_mouselook(delta)
+		old_camera.global_rotation = camera.global_rotation
 
-			# Position
-			camera.global_position = Vector3(
-				lerpf(cur_pos.x, target_pos.x, 1.0 - exp(-lerp_speed * delta)),
-				lerpf(cur_pos.y, target_pos.y, 1.0 - exp(-lerp_speed * delta * 1.15)),
-				lerpf(cur_pos.z, target_pos.z, 1.0 - exp(-lerp_speed * delta))
-			)
+func zoom_out(delta: float) -> void:
+	zoomed_seconds = max(0, zoomed_seconds - delta)
+	var t := curve.sample(zoomed_seconds / lerp_time_seconds)
+	compass.hide()
 
-			current_vignette_radius = lerpf(current_vignette_radius, invisible_vignette_radius, 1.0 - exp(-lerp_speed * delta));
-			vignette.set_instance_shader_parameter("radius", current_vignette_radius)
-			current_pitch_degrees = 0.0
-		else:
-			Input.set_mouse_mode(old_mouse_mode)
-			old_camera.current = true
+	transitioning = t > 0
 
-			camera.fov = old_camera.fov
-			camera.rotation = Vector3.ZERO
-			current_pitch_degrees = 0.0
-			camera.position = original_local_position
-			vignette.set_instance_shader_parameter("radius", invisible_vignette_radius)
+	if transitioning:
+		state = State.ZOOMING_OUT
+		mount_location.update_position = false
+		lerp_camera(t)
+	else:
+		state = State.ZOOMED_OUT
+		Input.set_mouse_mode(old_mouse_mode)
+		old_camera.current = true
+		camera.rotation = Vector3.ZERO
+
+func lerp_camera(t: float) -> void:
+	var orig_pos := old_camera.global_position
+	var target_pos := mount_location.global_position
+	
+	# fov
+	camera.fov = lerpf(old_camera.fov, target_fov, t)
+
+	# Rotation
+	camera.look_at(target_pos)
+
+	# Position
+	camera.global_position = Vector3(
+		lerpf(orig_pos.x, target_pos.x, t),
+		lerpf(orig_pos.y, target_pos.y, t),
+		lerpf(orig_pos.z, target_pos.z, t)
+	)
+
+	current_vignette_radius = lerpf(invisible_vignette_radius, target_vignette_radius, t);
+	vignette.set_instance_shader_parameter("radius", current_vignette_radius)
+	
 
 func _input(event):
 	# Receives mouse motion
@@ -132,17 +122,39 @@ func _input(event):
 	if event is InputEventMouseButton:
 		match event.button_index:
 			MOUSE_BUTTON_RIGHT:
-				# TODO: disable cannon moving thing
+				# TODO: disable cannon moving thing that doesn't exist yet
 				pass
 
-func _update_mouselook():
-	mouse_delta *= sensitivity * 0.1
-	var yaw = mouse_delta.x
-	var pitch = mouse_delta.y
-	mouse_delta = Vector2(0, 0)
+func _update_mouselook(delta: float) -> void:
+	var yaw_delta_deg := mouse_delta.x * yaw_sensitivity * 0.1
+	var pitch_delta_deg := -mouse_delta.y * pitch_sensitivity * 0.1
+	mouse_delta.x = 0
+	mouse_delta.y = 0
+
+	var old_yaw_deg := get_yaw_degrees(-camera.global_basis.z)
+	var target_yaw_deg := old_yaw_deg + yaw_delta_deg
 	
-	pitch = clamp(pitch, -90 - current_pitch_degrees, 90 - current_pitch_degrees)
-	current_pitch_degrees += pitch
-	
-	camera.global_rotate(Vector3.UP, deg_to_rad(-yaw))
-	camera.rotate_object_local(Vector3(1,0,0), deg_to_rad(-pitch))
+	var old_pitch_deg := get_pitch_degrees(-camera.global_basis.z)
+	var target_pitch_deg := old_pitch_deg + pitch_delta_deg
+	pitch_delta_deg = clamp(pitch_delta_deg, -90 - target_pitch_deg, 90 - target_pitch_deg)
+	target_pitch_deg += pitch_delta_deg
+
+	var yaw_deg := target_yaw_deg
+	var pitch_deg := target_pitch_deg
+	#var yaw_deg := lerpf(old_yaw_deg, target_yaw_deg, 1.0 - exp(-lerp_speed * delta ))
+	#var pitch_deg := lerpf(old_pitch_deg, target_pitch_deg, 1.0 - exp(-lerp_speed * delta))
+
+	set_local_pitch_yaw_degrees(pitch_deg, yaw_deg)
+
+func set_local_pitch_yaw_degrees(pitch: float, yaw: float) -> void:
+	# pitch then yaw
+	var offset := Vector3.FORWARD.rotated(Vector3.RIGHT, deg_to_rad(pitch)).rotated(Vector3.UP, deg_to_rad(-yaw))
+	var target := camera.global_position + offset
+	camera.look_at(target, Vector3.UP)
+
+func get_yaw_degrees(forward: Vector3) -> float:
+	return rad_to_deg(atan2(forward.x, -forward.z))
+
+func get_pitch_degrees(forward: Vector3) -> float:
+	forward = forward.normalized()
+	return rad_to_deg(asin(forward.y))

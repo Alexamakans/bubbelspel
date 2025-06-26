@@ -46,11 +46,11 @@ func _process(delta: float) -> void:
 	if state == State.ZOOMED_OUT and Input.is_action_just_pressed("look_binoculars"):
 		old_camera = get_viewport().get_camera_3d()
 		old_mouse_mode = Input.get_mouse_mode()
-		
+
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		global_transform = old_camera.global_transform
 		mount_location.update_position = false
-		
+
 	if state == State.ZOOMING_IN or Input.is_action_pressed("look_binoculars"):
 		zoom_in(delta)
 	elif camera.current:
@@ -95,7 +95,7 @@ func zoom_out(delta: float) -> void:
 func lerp_camera(t: float) -> void:
 	var orig_pos := old_camera.global_position
 	var target_pos := mount_location.global_position
-	
+
 	# fov
 	camera.fov = lerpf(old_camera.fov, target_fov, t)
 
@@ -105,19 +105,19 @@ func lerp_camera(t: float) -> void:
 	# Position
 	camera.global_position = Vector3(
 		lerpf(orig_pos.x, target_pos.x, t),
-		lerpf(orig_pos.y, target_pos.y, t),
+		lerpf(orig_pos.y, target_pos.y, min(1, t * 1.08)), # makes it so we look horizontally when zoomed in
 		lerpf(orig_pos.z, target_pos.z, t)
 	)
 
 	current_vignette_radius = lerpf(invisible_vignette_radius, target_vignette_radius, t);
 	vignette.set_instance_shader_parameter("radius", current_vignette_radius)
-	
+
 
 func _input(event):
 	# Receives mouse motion
 	if event is InputEventMouseMotion:
 		mouse_delta = event.relative
-	
+
 	# Receives mouse button input
 	if event is InputEventMouseButton:
 		match event.button_index:
@@ -133,7 +133,7 @@ func _update_mouselook(delta: float) -> void:
 
 	var old_yaw_deg := get_yaw_degrees(-camera.global_basis.z)
 	var target_yaw_deg := old_yaw_deg + yaw_delta_deg
-	
+
 	var old_pitch_deg := get_pitch_degrees(-camera.global_basis.z)
 	var target_pitch_deg := old_pitch_deg + pitch_delta_deg
 	pitch_delta_deg = clamp(pitch_delta_deg, -90 - target_pitch_deg, 90 - target_pitch_deg)

@@ -361,6 +361,8 @@ skeleton = NodePath("")
 transform = Transform3D(0.569921, 0, 0.813932, 0, 0.993627, 0, -0.813932, 0, 0.569921, 0, 2.04852, 0.84)
 mesh = SubResource("ArrayMesh_o6ssv")
 skeleton = NodePath("")
+script = ExtResource("7_sygc3")
+angular_velocity = Vector3(0, 35, 15)
 
 [node name="Main engine antennas" type="MeshInstance3D" parent="."]
 transform = Transform3D(0, 0, -0.299071, 0, 1, 0, -0.60899, 0, 0, 0, 3.07739, -8.06985)

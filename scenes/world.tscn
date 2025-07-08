@@ -98,7 +98,6 @@ _shader_parameters = {
 &"world_space_normal_blend": true
 }
 world_background = 0
-show_region_grid = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qfnet"]
 transparency = 4
@@ -242,7 +241,5 @@ offset_bottom = 138.0
 data_directory = "res://terrain"
 material = SubResource("Terrain3DMaterial_ggc52")
 assets = SubResource("Terrain3DAssets_l8ah6")
-show_grid = true
-show_region_grid = true
 top_level = true
 metadata/_edit_lock_ = true
